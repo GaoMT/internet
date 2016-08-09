@@ -96,7 +96,19 @@ namespace InternetDataMine.Controllers
                 loadModel.SystemType = 1;
             else
                 loadModel.SystemType = Convert.ToInt32(SystemType);
+            if (loadModel.SystemType == 1)
+            {
+                Session["SystemType"] = "1";//  Session 记录SystemType，以区分实时数据中 “测点编号” 显示
+            }
+            else if (loadModel.SystemType == 5)
+            {
+                Session["SystemType"] = "5";
 
+            }
+            else
+            {
+                Session["SystemType"] = "0";
+            }
             switch (loadModel.SystemType)
             {
                 //安全监控页面

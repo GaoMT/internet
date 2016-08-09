@@ -596,6 +596,11 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
             {
                 where += " 1=1";
             }
+            int StstemType = Convert.ToInt32(System.Web.HttpContext.Current.Session["SystemType"]);
+            if (StstemType != 0)
+            {
+                where += "and SystemType=" + StstemType;
+            }
             DataTableCollection dtc = ReturnTables(where, where, "SensorNum", "Data");
             return dtc;
         }
