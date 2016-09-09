@@ -917,6 +917,146 @@ namespace InternetDataMine.Controllers
                             break;
                     }
                     break;
+
+
+                case　7:
+                    switch (PageName)
+                    {
+                        #region  监测
+                        #region 实时数据
+                        //加载实时数据界面
+                        case "RealData":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_RealData" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_RT" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_RealData" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "RealData_HG";
+                            loadModel.PageTitle = "实时数据";
+                            break;
+                        #endregion
+
+                        #region 实时故障
+                        //加载实时故障
+                        case "AQGZ":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQGZ" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_RT" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQGZ" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQGZ_HG";
+                            loadModel.PageTitle = "实时故障";
+                            break;
+                        #endregion
+                        #region 实时报警页面
+                        //加载实时报警页面
+                        case "AQBJ":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQBJ" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_RT" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQBJ_NotSwitching" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQBJ_HG";
+                            loadModel.PageTitle = "实时报警信息";
+                            break;
+                        #endregion
+                        #endregion
+                        #region  查询
+
+                        #region 历史报警
+                        //加载历史报警页面
+                        case "AQBJHis":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQBJHis" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_His" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQBJHis" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQBJHis_HG";
+                            loadModel.PageTitle = "历史报警信息";
+                            break;
+                        #endregion
+                        #region 历史故障
+                        //加载历史故障页面
+                        case "AQGZHis":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQGZHis" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_His" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQGZHis" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQGZHis_HG";
+                            loadModel.PageTitle = "历史故障信息";
+                            break;
+                        #endregion
+
+
+                        #region 开关量状态变动
+                        //加载开关量状态变动页面
+                        case "AQKGL_Day":
+                            loadModel.QueryBarPath = "../DataXML/Safe/safe_Bar_Day" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQKGL" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQKGL_Day_HG";
+                            loadModel.SystemType = 1;
+                            loadModel.PageTitle = "每天开关量变动";
+                            break;
+                        
+                        case "AQKGL_Week":
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQKGL" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQKGL" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQKGL_Week_HG";
+                            loadModel.SystemType = 1;
+                            loadModel.PageTitle = "七天开关量变动";
+                            break;
+                      #endregion
+
+
+                        #region 历史模拟量统计
+                        //加载历史模拟量统计页面
+                        case "AQMT":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQMT" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_His" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQMT" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQMT";
+                            loadModel.PageTitle = "历史模拟量统计";
+                            break;
+
+                        case "AQMNL_1M":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQMNL" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_His" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQMNL_Minute" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQMNL_1M_HG";
+                            loadModel.PageTitle = "模拟量一分钟数据";
+                            break;
+
+                        case "AQMNL_3M":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQMNL" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_His" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQMNL_Minute" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQMNL_3M";
+                            loadModel.PageTitle = "模拟量三分钟数据";
+                            break;
+
+                        case "AQMNL_5M":
+                            //loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_AQMNL" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_His" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQMNL_Minute" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQMNL_5M";
+                            loadModel.PageTitle = "模拟量五分钟数据";
+                            break;
+
+                        case "AQMNL_1D":
+                            loadModel.QueryBarPath = "../DataXML/Safe/safe_Bar_Day" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQMNL_Day" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQMNL_1D";
+                            loadModel.PageTitle = "模拟量日统计";
+                            break;
+
+                        case "AQMNL_30D":
+                            loadModel.QueryBarPath = "../DataXML/Safe/safe_Bar_Day" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_AQMNL_Day" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "AQMNL_30D";
+                            loadModel.PageTitle = "模拟量月统计";
+                            break;
+
+                        #endregion
+
+                        default:
+                            loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_PointSet.xml";
+                            loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_PointSet" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";
+                            loadModel.PreLoadData = "RealData";
+                            break;
+                            #endregion
+                    }
+                     break;
                 default:
                     loadModel.QueryBarPath = "../DataXML/Safe/Safe_Bar_PointSet.xml";
                     loadModel.QueryDataPath = "../DataXML/Safe/Safe_Data_PointSet" + (string.IsNullOrEmpty(MineCode) ? "" : "_Mine") + ".xml";

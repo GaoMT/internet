@@ -420,6 +420,27 @@ namespace InternetDataMine.Models
                     
                     #endregion
 
+
+                   #region 【火灾束管】
+                   case EnumDataType.RealData_HG:
+                        Results = _BLL_Data.GetRealDataForAQ(MineCode, DevType, SensorNum, "", "7");
+                        break;
+                   //加载实时故障
+                   case EnumDataType.AQGZ_HG:
+                        Results = _BLL_Data.GetRealAQGZ(MineCode, DevType, "7");
+                        break;
+                   case EnumDataType.AQGZHis_HG: Results = _BLL_Data.GetHisAQGZ(MineCode, TypeName, SensorNum, BeginTime, EndTime, "7");
+                        break;
+                   case EnumDataType.AQBJ_HG: Results = _BLL_Data.GetRealAQBJ(MineCode, TypeName, "7");
+                        break;
+                   case EnumDataType.AQMNL_1M_HG:
+                        Results = _BLL_Data.GetData_AQMNL(MineCode, TypeName, SensorNum, BeginTime, EndTime, VIEW, "7");
+                        break;
+                   case EnumDataType.AQBJHis_HG: Results = _BLL_Data.GetHisAQBJ(MineCode, TypeName, SensorNum, BeginTime, EndTime, "7");
+                        break;
+
+
+                   #endregion
                     //返回空值 
                     default: Result = new DataTable(); break;
                 }
@@ -729,9 +750,15 @@ namespace InternetDataMine.Models
             AQBJ_KY,
             AQMNL_1M_KY,
             AQGZHis_KY,
-            AQBJHis_KY
-
-
+           AQBJHis_KY,
+            #endregion
+            #region 【火灾束管】
+            RealData_HG,
+            AQGZ_HG,
+            AQBJ_HG,
+            AQMNL_1M_HG,
+            AQGZHis_HG,
+           AQBJHis_HG
             #endregion
         }
         #endregion
