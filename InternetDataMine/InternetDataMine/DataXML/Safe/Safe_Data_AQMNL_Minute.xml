@@ -15,10 +15,10 @@
     <Col name="TypeName"  width="12%" align="center">设备名称</Col>
     <Col name="Place"  width="15%" align="center">安装地点</Col>
     <!--<Col name="StatisticaMaxDateTime" datatype="datetime"  width="15%" align="center">最大值时间</Col>-->
-    <Col name="MaxVal"  width="8%" align="center">最大值</Col>
+    <Col name="MaxVal"  width="7%" align="center">最大值</Col>
     <!--<Col name="StatisticaMinDateTime" datatype="datetime"  width="15%" align="center">最小值时间</Col>-->
-    <Col name="MinVal"  width="8%" align="center">最小值</Col>
-    <Col name="AvgVal"  width="10%" datatype="double" align="center" displayMask="+###.00">平均值</Col>
-    <Col name="DectTime"  width="10%" datatype="datetime" align="center">监测时间</Col>
+    <Col name="MinVal"  width="7%" align="center">最小值</Col>
+    <Col name="AvgVal"  width="7%" datatype="double" align="center" displayMask="+###.00">平均值</Col>
+    <Col name="DectTime"  width="15%" datatype="datetime" align="center">监测时间</Col>
   </Cols>
 </TreeList>
