@@ -190,10 +190,17 @@
                             if (!data[i].Disabled) {
                                 chkMines.checked = true;
                             }
+                            //--------------特种人员、超员、限制区域人员、工作异常报警选项不可用-----------------------------------------------------------
+                            if (i == 2 || i == 1 || i == 4 || i == 9)
+                            {
+                                chkMines.disabled = true;
+                            }
                             chkMines.value = data[i].AlarmType;
                             chkMines.name = "Group" + data[i].AlarmGroup;
                             chkMines.tag = data[i].AlarmGroup;
                             chkMines.onclick = function () {
+                                
+                                
                                 $.ajax({
                                    
                                     url: '../RealData/SetAlarmSetItem?AccountId=' + readCookie("UserID") + '&AlarmGroup=' + this.tag
@@ -725,10 +732,10 @@
         <div style="margin-top: 20px; font-weight: 700;">人员超时报警：</div>
         <div id="divAlarmNetExp3" style="height: auto; padding-left: 20px; border-style: solid; border-width: 1px; border-color: silver; ">
         </div>
-        <div style="margin-top: 20px; font-weight: 700;">人员超员报警：</div>
+        @*<div style="margin-top: 20px; font-weight: 700;">人员超员报警：</div>*@
         <div id="divAlarmNetExp4" style="height: auto; padding-left: 20px; border-style: solid; border-width: 1px; border-color: silver; ">
         </div>
-        <div style="margin-top: 20px; font-weight: 700;">特种作业工作异常报警：</div>
+        @*<div style="margin-top: 20px; font-weight: 700;">特种作业工作异常报警：</div>*@
         <div id="divAlarmNetExp5" style="height: auto; padding-left: 20px; border-style: solid; border-width: 1px; border-color: silver; ">
         </div>
     </div>
@@ -743,7 +750,7 @@
             <div style="width: 160px; display: inline-block;"><input id="soundC" type="radio" value="完整声音" checked="true" name="Sound" />完整声音</div>
         </div>
         <div style="margin-left:50px;">
-            <div style="margin-top: 20px;">按煤矿报警：</div>
+            @*<div style="margin-top: 20px;">按煤矿报警：</div>*@
             <div id="divMines"  hidden="hidden"  style="height: auto; padding-left: 20px;">
             </div>
 
@@ -755,7 +762,7 @@
             <div id="divCall" style="height: auto; padding-left: 20px;">
             </div>
 
-            <div style="margin-top: 20px;">按设备报警：</div>
+            @*<div style="margin-top: 20px;">按设备报警：</div>*@
             <div id="divSensor" style="height: auto;padding-left: 20px;">
             </div>
         </div>
