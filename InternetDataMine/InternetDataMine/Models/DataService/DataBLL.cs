@@ -1242,7 +1242,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
                 wherecount += " and sensorNum in ('" + sensorNum.Replace(",", "','") + "')";
             }
 
-            where += "PowerDatetime>='" + BegingTime + "' and PowerDatetime<='" + EndTime + "' and PowerEndDatetime IS NOT NULL";
+            where += " PowerDatetime>='" + BegingTime + "' and PowerDatetime<='" + EndTime + "' and PowerEndDatetime IS NOT NULL";
             wherecount += " and PowerDatetime>='" + BegingTime + "' and PowerDatetime<='" + EndTime + "' and PowerEndDatetime IS NOT NULL";
             // string wheredata = "select Row_Number() over (order by getdate() asc) as TmpID,SimpleName,SensorNum,d.TypeName,d.Unit,Place,(case PowerType when 0 then '上限断电' when 1 then '下限断电' else '开关量断电' end) as powertype,PowerDatetime,PowerEndDatetime,[dbo].[FunConvertTime](datediff(second, PowerDatetime,PowerEndDatetime)) as continuoustime,Max,MaxTime,Min,MinTime,Avg,RelevanceDepict,Measures,(case PowerDepit when 0 then '放炮' when 1 then '停电' when 2 then '割煤' when 3 then '采空区来压' when 4 then '调试' when 5 then '通风' when 6 then '发火' when 7 then '断线断电' else '其他' end) as powerwhy from ShineView_His.dbo.AQDD o left join DeviceType d on o.Type=d.TypeCode left join MineConfig g on o.MineCode=g.MineCode where " + where + "";
 
@@ -1302,7 +1302,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
 
 
 
-            where += "HitchDatetime>='" + BegingTime + "' and HitchDatetime<='" + EndTime + "'";
+            where += " HitchDatetime>='" + BegingTime + "' and HitchDatetime<='" + EndTime + "'";
             wherecount += "and HitchDatetime>='" + BegingTime + "' and HitchDatetime<='" + EndTime + "' and HitchEndDatetime  is not null";
             // string wheredata = "select Row_Number() over (order by getdate() asc) as TmpID,SimpleName,SensorNum,d.TypeName,d.Unit,Place,HitchDatetime,HitchEndDatetime,[dbo].[FunConvertTime](datediff(second, HitchDatetime,HitchEndDatetime)) as continuoustime,RelevanceDepict,measures,(case HitchDepict when 0 then '通信故障' when 1 then '设备故障' when 2 then '调试' else '其他' end) as badwhy from ShineView_His.dbo.AQGZ o left join DeviceType d on o.Type=d.TypeCode left join MineConfig g on o.MineCode=g.MineCode where " + where + " ";
             string wheredata = string.Format(@"
