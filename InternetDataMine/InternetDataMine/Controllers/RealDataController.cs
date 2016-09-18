@@ -42,6 +42,7 @@ namespace InternetDataMine.Controllers
             {
                 queryString = "";
             }
+            //在安全监控的sql中增加SystemType来区分安全监控、矿压、火管，人员未改
             string sql = string.Format(@"select * from (Select mc.MineCode,mc.SimpleName,case sc.TypeCode when 1 then '安全监控系统' when 2 then '人员管理系统' when 3 then '瓦斯抽放系统' else '安全监控/瓦斯抽放系统' end as systemName,
 case sc.StateCode when 1 then '通讯中断' when 2 then '传输异常'end as communicationState 
   from SystemConfig sc left join MineConfig mc on sc.MineCode=mc.ID where sc.StateCode<>0 ) as A {0}
@@ -49,7 +50,7 @@ case sc.StateCode when 1 then '通讯中断' when 2 then '传输异常'end as co
 /*安全监控报警*/
 select * from (select mc.MineCode,mc.SimpleName MineName,dt.TypeName deviceName,aqss.Place,
 case aqss.ValueState When 1 Then '报警' When 4 Then '断电报警' When 8 Then '故障报警' When 16 Then '馈电异常' Else '工作异常' end as AlarmType,
-ShowValue,aqss.PoliceMaxValue,aqss.PoliceMaxDatetime,aqss.PowerMax,aqss.PowerMaxDatetime,aqss.PowerDateTime,aqss.PoliceDateTime,[dbo].[FunConvertTime](datediff(second, PoliceDatetime,getdate())) as PoliceContinuoustime,
+ShowValue,aqss.PoliceMaxValue,AQSS.SystemType, aqss.PoliceMaxDatetime,aqss.PowerMax,aqss.PowerMaxDatetime,aqss.PowerDateTime,aqss.PoliceDateTime,[dbo].[FunConvertTime](datediff(second, PoliceDatetime,getdate())) as PoliceContinuoustime,
 [dbo].[FunConvertTime](datediff(second, PowerDateTime,getdate())) as PowerContinuoustime,[dbo].[FunConvertTime](datediff(second, PowerDateTime,getdate())) as AbnormalContinuoustime,
 aqss.AbnormalDateTime
 from (select * from aqss where ValueState<>0) as aqss  
