@@ -48,7 +48,7 @@ namespace InternetDataMine.Models.DataService
             return dal.ReturnData(sql);
         }
 
-        
+
 
         /// <summary>
         /// 删除公告
@@ -306,7 +306,7 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
             string sql =
                 string.Format(@"
                         select mineName,SensorNum,place,type,Value,unit,status,starttime,overtime,dbo.FunConvertTime(lasttime) 
-                        lasttime,level,fenxi,chulway,chulresult,jlpers,jltime,Datetime from shineview_his.[dbo].[WarnAlarm_His] Where {0}",strWhere);
+                        lasttime,level,fenxi,chulway,chulresult,jlpers,jltime,Datetime from shineview_his.[dbo].[WarnAlarm_His] Where {0}", strWhere);
             return dal.ReturnData(sql);
         }
 
@@ -393,16 +393,22 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
         /// <returns></returns>
         public DataTable GetMineInfo(string mineCode)
         {
-            string sql = string.Format("with a as "+
-                                        "("+
-                                        "select a.MineCode,AQJK,RYGL,a.aqjkstate,b.ryglstate from "+
-                                        "(select MineCode,Name AQJK,StateCode aqjkstate from SystemConfig where TypeCode=1) as a "+
-                                        "left join "+
-                                        "(select MineCode,name RYGL,StateCode ryglstate from SystemConfig where TypeCode=2) as b "+
-                                        "on a.MineCode=b.MineCode"+
-                                        ")"+
-                                        "select * from (select newid() rowid,mc.SimpleName,mc.MineCode,mc.City,a.AQJK,case a.aqjkstate when 0 then '正常' when 1 then '通讯中断' else '传输异常' end as AQJKState,"+
-                                        "a.RYGL,case a.RYGLState when 0 then '正常' when 1 then '通讯中断' else '传输异常' end as RYGLState from MineConfig mc left join a on mc.ID=a.MineCode ) as mytable where minecode like '%"+mineCode+"%' order by City,MineCode "
+            string sql = string.Format("with a as " +
+                                        "(" +
+                                        "select a.MineCode,AQJK,RYGL,ksyl,hzsg,a.aqjkstate,b.ryglstate ,c.ksylstate,d.hzsgstate  from " +
+                                        "(select MineCode,Name AQJK,StateCode aqjkstate from SystemConfig where TypeCode=1) as a " +
+                                        "left join " +
+                                        "(select MineCode,name RYGL,StateCode ryglstate from SystemConfig where TypeCode=2) as b " +
+                                        "on a.MineCode=b.MineCode  LEFT JOIN  " +
+                                         "(select MineCode,name ksyl,StateCode ksylstate from SystemConfig where TypeCode=5) as c " +
+                                         "on c.MineCode=b.MineCode LEFT JOIN " +
+                                         " (select MineCode,name hzsg,StateCode hzsgstate from SystemConfig where TypeCode=7) as d on d.MineCode=b.MineCode" +
+                                        ")" +
+                                        "select * from (select newid() rowid,mc.SimpleName,mc.MineCode,mc.City,a.AQJK,case a.aqjkstate when 0 then '正常' when 1 then '通讯中断' else '传输异常' end as AQJKState," +
+                                        "a.RYGL,case a.RYGLState when 0 then '正常' when 1 then '通讯中断' else '传输异常' end as RYGLState ," +
+                                        "a.ksyl,case a.ksylState when 0 then '正常' when 1 then '通讯中断' else '传输异常' end as ksylState," +
+                                        "a.hzsg,case a.hzsgState when 0 then '正常' when 1 then '通讯中断' else '传输异常'end as hzsgState " +
+                                        "from MineConfig mc left join a on mc.ID=a.MineCode ) as mytable where minecode like '%" + mineCode + "%' order by City,MineCode "
                                     );
             return dal.ReturnData(sql);
         }
@@ -516,13 +522,13 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
         /// 获取所有实时报警信息
         /// </summary>
         /// <returns>返回查询结果</returns>
-        public DataTable GetAllAlarmInfo(string mineCode,string AccountID)
+        public DataTable GetAllAlarmInfo(string mineCode, string AccountID)
         {
             string queryString = string.Empty;
 
             if (!string.IsNullOrEmpty(mineCode))
             {
-                queryString = string.Format(" Where MineCode Like '%{0}%'", mineCode);   
+                queryString = string.Format(" Where MineCode Like '%{0}%'", mineCode);
             }
 
             string sql = string.Format(@"With U As(
@@ -609,7 +615,7 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
         /// </summary>
         /// <param name="minecode">煤矿编号</param>
         /// <returns></returns>
-        public DataTable GetRealDataForAQList(string minecode, string Devtype,string systemType)
+        public DataTable GetRealDataForAQList(string minecode, string Devtype, string systemType)
         {
             DataTable dt = new DataTable();
             string where = " 1=1 ";
@@ -629,7 +635,7 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
             return dt;
         }
 
-        public DataTable GetDevType(string MineCode,string systemType)
+        public DataTable GetDevType(string MineCode, string systemType)
         {
             string sql = string.Format("select * from DeviceType where typecode in (select type from AQMC where MineCode='" + MineCode + "' and SystemType='" + systemType + "' union select type from AQKC where MineCode='" + MineCode + "' and SystemType='" + systemType + "' )order by TypeCode");
             return dal.ReturnData(sql);
@@ -708,7 +714,7 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
         /// <param name="sensornum">测点编号</param>
         /// <param name="devtype">设备类型 A 模拟量，D 开关量，L 累计量</param>
         /// <returns></returns>
-        public DataTableCollection GetRealDataForAQ(string minecode, string devname, string sensornum, string devtype,string systemType)
+        public DataTableCollection GetRealDataForAQ(string minecode, string devname, string sensornum, string devtype, string systemType)
         {
             DataTable dt = new DataTable();
             string TypeCode = systemType;
@@ -742,7 +748,7 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
             }
             if (sensornum != "" && sensornum != null)
             {
-                wherecount += " and Sensornum in ('" + sensornum.Replace(",","','") + "')";
+                wherecount += " and Sensornum in ('" + sensornum.Replace(",", "','") + "')";
                 sensornum = "SensorNum in ('" + sensornum.Replace(",", "','") + "')";
                 if (where == "")
                 {
@@ -785,12 +791,12 @@ delete [dbo].[DiskManage] Where Disk_ID ='{0}' Or PDiskID ='{0}'", id);
             //dt = dal.GetRealDataForAQ(where);
             //return dt;
             string wheredata = @"select Row_Number() over (order by getdate() asc) as TmpID,g.SimpleName,SensorNum,
-d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig where MineCode in (select id from MineConfig where MineCode=o.MineCode) and TypeCode="+TypeCode
-+") = 0 then  (case ValueState  when 8 then '故障'  when 32 then '工作异常'  when 64 then '分站故障' else ShowValue end) else '通讯中断' end as ShowValue,"
-+"case when  (select top 1 [StateCode] from systemconfig where MineCode in (select id from MineConfig where MineCode=o.MineCode) and TypeCode=" + TypeCode
+d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig where MineCode in (select id from MineConfig where MineCode=o.MineCode) and TypeCode=" + TypeCode
++ ") = 0 then  (case ValueState  when 8 then '故障'  when 32 then '工作异常'  when 64 then '分站故障' else ShowValue end) else '通讯中断' end as ShowValue,"
++ "case when  (select top 1 [StateCode] from systemconfig where MineCode in (select id from MineConfig where MineCode=o.MineCode) and TypeCode=" + TypeCode
 + ") = 0 then  (case ValueState when 0 then '正常'  when 1 then '报警' when 2 then '复电' when 4 then '断电' when 8 then '故障' when 16 then '馈电异常' when 64 then '分站故障' else '工作异常' end)  when (select top 1 [StateCode] from systemconfig where MineCode in (select id from MineConfig where MineCode=o.MineCode) and TypeCode=" + TypeCode
 + ") = 1 then  '通讯中断' else '传输异常' end  as ValueState  ,Datetime from AQSS o left join DeviceType d on o.Type=d.TypeCode left join MineConfig g on o.MineCode=g.MineCode where " + where + "";
-                //+ where + "";
+            //+ where + "";
 
             return ReturnTables(wheredata, wheredata, "TmpID", "Data");
         }
@@ -814,7 +820,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
             }
             if (!string.IsNullOrEmpty(SensorNameCode))
             {
-                where += " and  dt.typeCode in ("+SensorNameCode+")";
+                where += " and  dt.typeCode in (" + SensorNameCode + ")";
             }
             if (devtype == "D")
             {
@@ -847,6 +853,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
         /// <param name="BeginTime">开始时间</param>
         /// <param name="EndTime">结束时间</param>
         /// <returns>查询的数据集</returns>
+        /// substring(convert(nvarchar(30),StatisticalTime,120),0,16)+'0:00'在 sql+下面   group by 和order by 后面
         public DataTableCollection ReturnCurverDatas(string mineCode, string SensorCodes, string BeginTime, string EndTime)
         {
 
@@ -856,9 +863,9 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
             foreach (string mysensorCode in sensorCodes)
             {
                 sql += " select  max(StatisticaMaxValue) maxValue,min(StatisticaMinValue) minValue,AVG(StatisticaAvg) avgValue," +
-                    "substring(convert(nvarchar(30),StatisticalTime,120),0,16)+'0:00' statisticTime,Place from (select * from ShineView_His.dbo.AQMT where ID>=@BeginID and ID<@EndID) as xx where MineCode='" + mineCode + "' and sensorNum='" + mysensorCode + "'" +
-                    " and StatisticalTime>='" + BeginTime + "' and StatisticalTime<'" + EndTime + "'"+
-                    "group by substring(convert(nvarchar(30),StatisticalTime,120),0,16)+'0:00',Place order by substring(convert(nvarchar(30),StatisticalTime,120),0,16)+'0:00' ";
+                    " StatisticalTime statisticTime,Place from (select * from ShineView_His.dbo.AQMT where ID>=@BeginID and ID<@EndID) as xx where MineCode='" + mineCode + "' and sensorNum='" + mysensorCode + "'" +
+                    " and StatisticalTime>='" + BeginTime + "' and StatisticalTime<'" + EndTime + "'" +
+                    "group by StatisticalTime,Place order by StatisticalTime";
             }
             return dal.ReturnDs(sql).Tables;
         }
@@ -943,7 +950,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
         /// </summary>
         /// <param name="minecode">煤矿编号</param>
         /// <returns></returns>
-        public DataTableCollection GetRealAQBJ(string minecode, string devname,string systemType)
+        public DataTableCollection GetRealAQBJ(string minecode, string devname, string systemType)
         {
             string where = "";
             string wherecount = "select * from AQSS where valuestate = 1 ";
@@ -1004,7 +1011,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
         /// </summary>
         /// <param name="minecode">煤矿编号</param>
         /// <returns></returns>
-        public DataTableCollection GetRealAQGZ(string minecode, string DevType,string SystemType)
+        public DataTableCollection GetRealAQGZ(string minecode, string DevType, string SystemType)
         {
             string where = "";
             string wherecount = "select * from AQSS where (valuestate = 8 or valuestate = 64) ";
@@ -1126,7 +1133,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
         /// <param name="EndTime">【必选】结束时间</param>
         /// <returns></returns>
         /// 2015-2-4 修改记录：添加o.
-        public DataTableCollection GetHisAQBJ(string minecode, string devname, string sensorNum, DateTime BegingTime, DateTime EndTime,string systemType)
+        public DataTableCollection GetHisAQBJ(string minecode, string devname, string sensorNum, DateTime BegingTime, DateTime EndTime, string systemType)
         {
             string where = "";
             string wherecount = "select * from [ShineView_His].[dbo].AQBJ where 1=1 ";
@@ -1211,7 +1218,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
         /// <param name="EndTime">【必选】结束时间</param>
         /// <returns></returns>
         /// 2015-2-4 修改记录：添加o.
-        public DataTableCollection GetHisAQDD(string minecode, string devname, string sensorNum, DateTime BegingTime, DateTime EndTime,string systemType)
+        public DataTableCollection GetHisAQDD(string minecode, string devname, string sensorNum, DateTime BegingTime, DateTime EndTime, string systemType)
         {
             string where = "";
             string wherecount = "select * from ShineView_His.dbo.AQDD where 1=1 ";
@@ -1230,7 +1237,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
                 wherecount += "and Type='" + devname + "'";
             }
 
-            if(systemType!="" && systemType!=null)
+            if (systemType != "" && systemType != null)
             {
                 where += " SystemType='" + systemType + "' and";
                 wherecount += " and SystemType='" + systemType + "'";
@@ -1270,7 +1277,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
         /// <returns></returns>
         /// 2015-2-3 修改：添加o.
         /// 2016-7-8 修改，添加 system Type;
-        public DataTableCollection GetHisAQGZ(string minecode, string devname, string sensorNum, DateTime BegingTime, DateTime EndTime,string systemType)
+        public DataTableCollection GetHisAQGZ(string minecode, string devname, string sensorNum, DateTime BegingTime, DateTime EndTime, string systemType)
         {
             string where = "";
             string wherecount = "select * from ShineView_His.dbo.AQGZ where 1=1 ";
@@ -1460,7 +1467,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
         /// <param name="EndTime"></param>
         /// <param name="VIEW"></param>
         /// <returns></returns>
-        public DataTableCollection GetData_AQMNL(string minecode, string devname, string SensorNum, DateTime BegingTime, DateTime EndTime, TransJsonToTreeListModel.EnumDataType VIEW,string systemType)
+        public DataTableCollection GetData_AQMNL(string minecode, string devname, string SensorNum, DateTime BegingTime, DateTime EndTime, TransJsonToTreeListModel.EnumDataType VIEW, string systemType)
         {
             string where = "";
             string wheredata = "";
@@ -1554,8 +1561,8 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
                         }
                         where += "SubmitTime>='" + BegingTime + "' and SubmitTime<='" + EndTime + "' and 最大值时间 is not null ";
                         wherecount = string.Format(@"select count(1) from shineview_His.[dbo].[Report_Day] where {0}", where);
-                        wheredata = string.Format(@"select D.TypeCode,* from (select 煤矿编号,煤矿名称,测点编号,设备名,安装位置,最大值,最大值时间,报警值,断电值,平均值,SubmitTime"+
-                                    " from shineview_His.[dbo].[Report_Day] where {0} order by SubmitTime offset "+(pageIndex*pageSize).ToString()+" row fetch next "+pageSize.ToString()+" rows only) as R "+
+                        wheredata = string.Format(@"select D.TypeCode,* from (select 煤矿编号,煤矿名称,测点编号,设备名,安装位置,最大值,最大值时间,报警值,断电值,平均值,SubmitTime" +
+                                    " from shineview_His.[dbo].[Report_Day] where {0} order by SubmitTime offset " + (pageIndex * pageSize).ToString() + " row fetch next " + pageSize.ToString() + " rows only) as R " +
                                     "left join ShineView_data.dbo.DeviceType D on R.设备名=D.TypeName ", where);
                         sql = wherecount + " " + wheredata;
                         break;
@@ -1567,7 +1574,7 @@ d.TypeName,d.Unit,Place,case when  (select top 1 [StateCode] from systemconfig w
 
             }
 
-           return dal.ReturnDs(sql).Tables;
+            return dal.ReturnDs(sql).Tables;
 
             //return ReturnTables(wheredata, wherecount, "TmpID", "His"); ;
 
@@ -1798,17 +1805,17 @@ Left Join  MineConfig o on o.MineCode = b.MineCode where " + (where.Equals("") ?
                 };
 
             wherecount = GetSelectString(strarrCount);
-            wherecount = "select SimpleName,badtimes,d.MineCode,starttime,endtime,"+
-                "case TypeCode when 1 then '安全监控' when 2 then '人员管理' when 3 then '瓦斯抽放' else '安全监控/瓦斯抽放' end as SystemTypeName,"+
-                "timecount from (select count(typecode) badtimes,MineCode,min(LastTime) starttime,max(dateadd(second,timeout,LastTime)) endtime,"+
-                "TypeCode,dbo.FunConvertTime(sum(Continuous)) timecount from shineview_his.dbo.BadLog "+
-                (wherecount.Equals("") ? "1=1" : wherecount)+
+            wherecount = "select SimpleName,badtimes,d.MineCode,starttime,endtime," +
+                "case TypeCode when 1 then '安全监控' when 2 then '人员管理' when 3 then '瓦斯抽放' else '安全监控/瓦斯抽放' end as SystemTypeName," +
+                "timecount from (select count(typecode) badtimes,MineCode,min(LastTime) starttime,max(dateadd(second,timeout,LastTime)) endtime," +
+                "TypeCode,dbo.FunConvertTime(sum(Continuous)) timecount from shineview_his.dbo.BadLog " +
+                (wherecount.Equals("") ? "1=1" : wherecount) +
                 " group by MineCode,TypeCode) as dleft join MineConfig mc on d.MineCode=mc.MineCode where SimpleName is not null order by MineCode";
 
-           // wherecount = "select * from ShineView_His.dbo.BadLog where " + (wherecount.Equals("") ? "1=1" : wherecount);
+            // wherecount = "select * from ShineView_His.dbo.BadLog where " + (wherecount.Equals("") ? "1=1" : wherecount);
 
-//            string wheredata = @"select Row_Number() over (order by LastTime asc) as TmpID,o.MineCode,SimpleName,case TypeCode when 1 then '安全监控' when 2 then '人员管理' when 3 then '瓦斯抽放' else '安全监控/瓦斯抽放' end as SystemTypeName,Case StateCode When 0 Then '正常' When 1 Then '通讯中断' When 2 Then '传输异常' End StateCode,LastTime StartTime,dateadd(second,timeout,LastTime) EndTime,dbo.FunConvertTime(Continuous) Continuous  from ShineView_His.dbo.BadLog B
-//Left Join  MineConfig o on o.MineCode = b.MineCode where " + (where.Equals("") ? "1=1" : where);
+            //            string wheredata = @"select Row_Number() over (order by LastTime asc) as TmpID,o.MineCode,SimpleName,case TypeCode when 1 then '安全监控' when 2 then '人员管理' when 3 then '瓦斯抽放' else '安全监控/瓦斯抽放' end as SystemTypeName,Case StateCode When 0 Then '正常' When 1 Then '通讯中断' When 2 Then '传输异常' End StateCode,LastTime StartTime,dateadd(second,timeout,LastTime) EndTime,dbo.FunConvertTime(Continuous) Continuous  from ShineView_His.dbo.BadLog B
+            //Left Join  MineConfig o on o.MineCode = b.MineCode where " + (where.Equals("") ? "1=1" : where);
             string wheredata = "selectRow_Number() over (order by starttime asc) as TmpID, SimpleName,badtimes,d.MineCode,starttime,endtime," +
                 "case TypeCode when 1 then '安全监控' when 2 then '人员管理' when 3 then '瓦斯抽放' else '安全监控/瓦斯抽放' end as SystemTypeName," +
                 "timecount from (select count(typecode) badtimes,MineCode,min(LastTime) starttime,max(dateadd(second,timeout,LastTime)) endtime," +
@@ -2295,11 +2302,11 @@ Left Join  MineConfig o on o.MineCode = b.MineCode where " + (where.Equals("") ?
 
             //else
             //{
-                where += " and (EndAlTime like 'x%' or EndAlTime like 'X%')";
-                //wherecount += " and (Type like '超员%' or Type like '%超员%' or Type like '%超员') and (EndAlTime like 'x%' or EndAlTime like 'X%')";
+            where += " and (EndAlTime like 'x%' or EndAlTime like 'X%')";
+            //wherecount += " and (Type like '超员%' or Type like '%超员%' or Type like '%超员') and (EndAlTime like 'x%' or EndAlTime like 'X%')";
             //}
             //dt = dal.GetRYCYXZ(where);
-                string wheredata = "select Row_Number() over (order by getdate() asc) as TmpID,SimpleName ,Name ,Position ,Department ,o.JobAddress,o.Type ,InTime ,q.AreaName ,InAreaTime ,f.Place ,InNowStTime ,StartAlTime ,dbo.FunConvertTime(datediff(second, StartAlTime,getdate())) as continuoustime from RYCYXZ o left join RYXX x on x.MineCode=o.MineCode and o.JobCardCode=x.JobCardCode left join RYFZ f on o.MineCode=f.MineCode and o.StationCode=f.StationCode left join RYQY q on o.MineCode=q.MineCode and o.AreaCode=q.AreaCode left join MineConfig m on o.MineCode=m.MineCode " + where;
+            string wheredata = "select Row_Number() over (order by getdate() asc) as TmpID,SimpleName ,Name ,Position ,Department ,o.JobAddress,o.Type ,InTime ,q.AreaName ,InAreaTime ,f.Place ,InNowStTime ,StartAlTime ,dbo.FunConvertTime(datediff(second, StartAlTime,getdate())) as continuoustime from RYCYXZ o left join RYXX x on x.MineCode=o.MineCode and o.JobCardCode=x.JobCardCode left join RYFZ f on o.MineCode=f.MineCode and o.StationCode=f.StationCode left join RYQY q on o.MineCode=q.MineCode and o.AreaCode=q.AreaCode left join MineConfig m on o.MineCode=m.MineCode " + where;
             string wherecount = "select * from RYCYXZ o " + where;
             return ReturnTables(wheredata, wherecount, "TmpID", "Data");
         }
@@ -2371,11 +2378,11 @@ Left Join  MineConfig o on o.MineCode = b.MineCode where " + (where.Equals("") ?
             }
             //else
             //{
-                where += " and (EndAlTime like 'x%' or EndAlTime like 'X%')";
-                //wherecount += " and (Type like '限制%' or Type like '%限制%' or Type like '%限制') and (EndAlTime like 'x%' or EndAlTime like 'X%')";
+            where += " and (EndAlTime like 'x%' or EndAlTime like 'X%')";
+            //wherecount += " and (Type like '限制%' or Type like '%限制%' or Type like '%限制') and (EndAlTime like 'x%' or EndAlTime like 'X%')";
             //}
             //dt = dal.GetRYCYXZ(where);
-                string wheredata = "select Row_Number() over (order by getdate() asc) as TmpID,SimpleName ,Name ,Position ,Department ,o.JobAddress ,InTime ,q.AreaName ,InAreaTime ,f.Place ,InNowStTime ,StartAlTime ,dbo.FunConvertTime(datediff(second, StartAlTime,getdate())) as continuoustime from RYCYXZ o left join RYXX x on x.MineCode=o.MineCode and o.JobCardCode=x.JobCardCode left join RYFZ f on o.MineCode=f.MineCode and o.StationCode=f.StationCode left join RYQY q on o.MineCode=q.MineCode and o.AreaCode=q.AreaCode left join MineConfig m on o.MineCode=m.MineCode " + where;
+            string wheredata = "select Row_Number() over (order by getdate() asc) as TmpID,SimpleName ,Name ,Position ,Department ,o.JobAddress ,InTime ,q.AreaName ,InAreaTime ,f.Place ,InNowStTime ,StartAlTime ,dbo.FunConvertTime(datediff(second, StartAlTime,getdate())) as continuoustime from RYCYXZ o left join RYXX x on x.MineCode=o.MineCode and o.JobCardCode=x.JobCardCode left join RYFZ f on o.MineCode=f.MineCode and o.StationCode=f.StationCode left join RYQY q on o.MineCode=q.MineCode and o.AreaCode=q.AreaCode left join MineConfig m on o.MineCode=m.MineCode " + where;
             string wherecount = "select * from RYCYXZ o " + where;
 
             return ReturnTables(wheredata, wherecount, "TmpID", "Data");
@@ -2581,7 +2588,7 @@ Left Join  MineConfig o on o.MineCode = b.MineCode where " + (where.Equals("") ?
             {
                 return null;
             }
-           
+
             string where = " where 1=1 ";
             if (minecode != null && minecode != "")
             {
@@ -2615,7 +2622,7 @@ Left Join  MineConfig o on o.MineCode = b.MineCode where " + (where.Equals("") ?
                     print @sql
                     exec('select count(1) as totalRow from ('+@sql+') as mytable')
                     exec('select * from ('+@sql+') as mytable order by inStationTime offset {1} row fetch next {2} rows only')
-                    ", where,pageIndex*pageSize,pageSize);
+                    ", where, pageIndex * pageSize, pageSize);
             return dal.ReturnDs(sql).Tables;
         }
 
@@ -2676,7 +2683,7 @@ Left Join RolesInfo R on g.RoleID = r.RoleID where 1=1 ");
                     string.Format(
                         "Update [UsersInfo] Set GroupID ='{0}',UserName ='{1}',[PassWord] ='{2}',Remark='{3}' Where UserID ='{4}'"
                         , MyUser.GroupID, MyUser.UserName, MyUser.PassWord, MyUser.Remark, MyUser.UserID);
-                
+
                 Result = dal.ExcuteSql(sql);
             }
             return Result;
@@ -2799,7 +2806,7 @@ insert into RolesInfo(RoleID,RoleName,RoleDescription,Remark)values(newid(),'{0}
         public bool DelRole(string RoleID)
         {
             bool Result = true;
-            string sql = string.Format("delete from RolesInfo where RoleID in (" + RoleID + ")  delete from RolesPowerInfo where RoleID in ("+RoleID+") ");
+            string sql = string.Format("delete from RolesInfo where RoleID in (" + RoleID + ")  delete from RolesPowerInfo where RoleID in (" + RoleID + ") ");
             Result = Result & dal.ExcuteSql(sql);
             return Result;
         }
@@ -2819,7 +2826,7 @@ insert into RolesInfo(RoleID,RoleName,RoleDescription,Remark)values(newid(),'{0}
                 sql2 += ",Convert(uniqueidentifier,'" + MyMenu.ParentMenuID + "')";
             }
             string sql = string.Format("{0},ClassNO,MenuName,MenuDescription,Remark,MenuIndex,MenuPath) {1},{2},'{3}','{4}','{5}',{6},'{7}')", sql1,
-                                       sql2, MyMenu.ClassNO, MyMenu.MenuName, MyMenu.MenuDescription, MyMenu.Remark, MyMenu.MenuIndex,MyMenu.MenuPath);
+                                       sql2, MyMenu.ClassNO, MyMenu.MenuName, MyMenu.MenuDescription, MyMenu.Remark, MyMenu.MenuIndex, MyMenu.MenuPath);
             return dal.ExcuteSql(sql);
         }
         /// <summary>
@@ -2856,11 +2863,11 @@ insert into RolesInfo(RoleID,RoleName,RoleDescription,Remark)values(newid(),'{0}
         {
             bool Result = true;
             string sql = string.Format("update MenusInfo set ");
-            if ( Menu.ClassNO != 0)
+            if (Menu.ClassNO != 0)
             {
                 sql += "ClassNO='" + Menu.ClassNO + "',";
             }
-            if(string.IsNullOrEmpty(Menu.ParentMenuID))
+            if (string.IsNullOrEmpty(Menu.ParentMenuID))
             {
                 sql +=
               string.Format(
@@ -2874,7 +2881,7 @@ insert into RolesInfo(RoleID,RoleName,RoleDescription,Remark)values(newid(),'{0}
                   "MenuName='{0}',MenuPath='{1}',MenuParentID=Convert(uniqueidentifier,{2}),MenuDescription='{3}',Remark='{4}',MenuIndex={6} where MenuID='{5}'",
                   Menu.MenuName, Menu.MenuPath, string.IsNullOrEmpty(Menu.ParentMenuID) ? null : "'" + Menu.ParentMenuID + "'", Menu.MenuDescription, Menu.Remark, Menu.MenuID, Menu.MenuIndex);
             }
-          
+
             Result = Result & dal.ExcuteSql(sql);
             return Result;
         }
@@ -3263,7 +3270,7 @@ insert into RolesInfo(RoleID,RoleName,RoleDescription,Remark)values(newid(),'{0}
             bool Result = false;
             if (Prop.Length == Values.Length)
             {
-                string sql = string.Format("if not exists(select 1 from EItable_JBXX where colliery_no='"+Values[0]+"') begin insert into EItable_JBXX ");
+                string sql = string.Format("if not exists(select 1 from EItable_JBXX where colliery_no='" + Values[0] + "') begin insert into EItable_JBXX ");
                 string sqlprop = string.Empty;
                 string sqlvalue = string.Empty;
                 for (int i = 0; i < Prop.Length; i++)
@@ -3297,7 +3304,7 @@ insert into RolesInfo(RoleID,RoleName,RoleDescription,Remark)values(newid(),'{0}
                 }
                 sql = sql.Remove(sql.Length - 1);
                 sql += " where id=" + ID + "";
-                Result =  dal.ExcuteSql(sql);
+                Result = dal.ExcuteSql(sql);
             }
             return Result;
         }
@@ -3580,7 +3587,7 @@ insert into RolesInfo(RoleID,RoleName,RoleDescription,Remark)values(newid(),'{0}
         /// <returns></returns>
         public DataTable QueryQYZZ(string minecode)
         {
-            string sql = string.Format("select * from (select * from EItable_QYZZ Where colliery_no like '%{0}%') as A "+
+            string sql = string.Format("select * from (select * from EItable_QYZZ Where colliery_no like '%{0}%') as A " +
                 " left join (select MineCode,simpleName from MineConfig) as mc on A.colliery_no=mc.MineCode ", minecode);
             return dal.ReturnData(sql);
         }
@@ -3661,8 +3668,8 @@ insert into RolesInfo(RoleID,RoleName,RoleDescription,Remark)values(newid(),'{0}
         /// <returns></returns>
         public DataTable QueryQYTZ(string minecode)
         {
-            string sql = string.Format(@"Select * from (Select id,colliery_no,upload_month,drawings_type,explain,"+
-                "valid_date_begin,valid_date_end ,filename from EItable_QYTZ Where colliery_no liKe '%{0}%' ) A Left Join "+
+            string sql = string.Format(@"Select * from (Select id,colliery_no,upload_month,drawings_type,explain," +
+                "valid_date_begin,valid_date_end ,filename from EItable_QYTZ Where colliery_no liKe '%{0}%' ) A Left Join " +
                 "EIDrop_QYTZtype  B on b.Code = a.drawings_type left join (select minecode,simpleName from mineconfig) as mc on a.colliery_no=mc.minecode", minecode);
             return dal.ReturnData(sql);
         }
@@ -3957,22 +3964,22 @@ left join
         /// <returns></returns>
         public DataTable HiddenTrouble_Recheck_Query(string Condition)
         {
-            
-            string sql ="select * from (select a.RowID,a.CheckCategory,a.MineCode,mc.SimpleName, choose(a.[TroubleClass],'A级','B级','C级') TroubleClass,"+
-"choose(a.[TroubleCategory],'顶板','运输','机电','通风','瓦斯','煤尘','放炮','火灾','水害','其它') [TroubleCategory],"+
-"a.CheckDate,a.CheckDept,a.Rummager,a.TroubleContent,a.HiddenResponsibilityDept,b.RowID processID,b.TroubleProcessDate,b.TroubleProcesser,"+
-"b.TroubleProcessContent,b.TroubleProcessCompleteDate,case   when b.TroubleID is null then   '未处理' else '已处理' end as ProcessStatus,c.RowID recheckID,"+
+
+            string sql = "select * from (select a.RowID,a.CheckCategory,a.MineCode,mc.SimpleName, choose(a.[TroubleClass],'A级','B级','C级') TroubleClass," +
+"choose(a.[TroubleCategory],'顶板','运输','机电','通风','瓦斯','煤尘','放炮','火灾','水害','其它') [TroubleCategory]," +
+"a.CheckDate,a.CheckDept,a.Rummager,a.TroubleContent,a.HiddenResponsibilityDept,b.RowID processID,b.TroubleProcessDate,b.TroubleProcesser," +
+"b.TroubleProcessContent,b.TroubleProcessCompleteDate,case   when b.TroubleID is null then   '未处理' else '已处理' end as ProcessStatus,c.RowID recheckID," +
 "case  when c.TroubleID is NULL then '未复查' else '已复查' end recheckFlag ,Convert(varchar(10),c.TroubleRecheckDate,120) TroubleRecheckDate," +
-"c.TroubleRechecker,c.TroubleRecheckResult,c.IsPass,case when c.IsPass=1 then '隐患已消除' when c.IsPass=0 then '隐患未消除' "+
-"else '未复查' end as recheckResult ,c.Remark from HiddenTrouble_Check A "+
-" left join HiddenTrouble_Process B on a.RowID=b.TroubleID "+
-" left join HiddenTrouble_ReCheck C on a.RowID=c.TroubleID"+
+"c.TroubleRechecker,c.TroubleRecheckResult,c.IsPass,case when c.IsPass=1 then '隐患已消除' when c.IsPass=0 then '隐患未消除' " +
+"else '未复查' end as recheckResult ,c.Remark from HiddenTrouble_Check A " +
+" left join HiddenTrouble_Process B on a.RowID=b.TroubleID " +
+" left join HiddenTrouble_ReCheck C on a.RowID=c.TroubleID" +
  " left join mineconfig mc on a.MineCode=mc.MineCode) as tx ";
             if (Condition != "")
             {
                 sql += " where  " + Condition;
             }
-            
+
             return dal.ReturnData(sql);
         }
 
@@ -4008,7 +4015,7 @@ left join
         {
             string sql = string.Format("INSERT INTO [dbo].[WorkShiftInfo]([MineCode],[Dept],[PreWorkTime],[PreWorkContent],[PreWorkShift],[PreWorkPersonName],[NextWorkTime]" +
           " ,[NextWorkContent],[NextWorkShift],[NextWorkPersonName],[Remark],[WorkShiftCategory])VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11})", model.MineCode, model.Dept, model.PreWorkTime, model.PreWorkContent, model.PreWorkShift, model.PreWorkPersonName, model.NextWorkTime,
-          model.NextWorkContent, model.NextWorkShift, model.NextWorkPersonName, model.Remark,model.WorkShiftCategory);
+          model.NextWorkContent, model.NextWorkShift, model.NextWorkPersonName, model.Remark, model.WorkShiftCategory);
             return dal.ExcuteSql(sql);
         }
 
@@ -4088,7 +4095,7 @@ left join
         /// <param name="BeginTime">查询开始时间</param>
         /// <param name="EndTime">查询结束时间</param>
         /// <returns></returns>
-        public DataTable ProcessLogInfo_Query(string BeginTime,string EndTime,string ProcessUserName)
+        public DataTable ProcessLogInfo_Query(string BeginTime, string EndTime, string ProcessUserName)
         {
             string sql = string.Format(@"SELECT [ProrcessUserName],[ProcessContent],[ProcessDateTime],[Remark] FROM 
                     [dbo].[ProcessLogInfo] where ProcessDateTime>='{0}' and ProcessDateTime<'{1}' and ProrcessUserName like '%{2}%' order by ProcessID 

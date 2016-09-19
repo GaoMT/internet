@@ -195,15 +195,15 @@
         tooltip: {
             trigger: 'axis'
         },
-        legend: {
+        legend: {//图例
             data: []
         },
-        animation: false,
+        animation: false,//是否开启动画
         toolbox: {
             show: true,
             feature: {
                 mark: { show: true },
-                dataZoom: { show: true },
+                dataZoom: { show: true },//区域缩放
                 dataView: { show: false },
                 magicType: { show: true, type: ['line', 'bar'] },
                 restore: { show: true },
@@ -250,7 +250,7 @@
         myoption.series = [];
         myoption.legend.data = [];
         $.ajax({
-            url: '../Chart/ReturnCurverDatas',
+            url: '../Chart/ReturnCurverDatas',// 把 取的数据 改为取每分钟
             data: { mineCode: MineCode, sensorCodes: SensorCodes.join(','), BeginTime: BeginTime},
             method: 'post',
             type: 'json',
@@ -275,6 +275,7 @@
                             name: item[0].Place,
                             type: 'line',
                             data: [],
+                            symbolSize:0.1,
                             //markLine: {
                             //    data: [{ type: 'max', name: '最大值', title: '最大值' },
                             //        { type: 'min',name:'最小值' ,title: '最小值' },
@@ -283,23 +284,31 @@
                             //},
                             markPoint: {
                                 data: [{type:'max',name:'最大值'}]
-                            }
+                            },
 
                         };
 
                         myoption.legend.data.push(item[0].Place);
                         // TO DO 所有曲线信息
                         //循环查出所有测点值
+                        var flag=0;
                         $(item).each(function (myindex, myitem) {
 
+                            
+
+                            debugger;
+                            if (myindex != 0 && !(myitem.statisticTime.substring(11, 16).replace(/:/g, "") - flag == 1 || ((myitem.statisticTime.substring(11, 16).replace(/:/g, "") - flag) == 41 && myitem.statisticTime.substring(14, 16) == "00" && flag.substring(2)=="59")))
+                            {
+                                myoption.xAxis[0].data.push("");
+                                line.data.push("-");
+                            }
                             if (i == 0) {
                                 myoption.xAxis[0].data.push(myitem.statisticTime);
                             }
-
-
                             line.data.push(myitem.maxValue);
                             //TO DO 每条曲线内容信息
-
+                            
+                            flag = myitem.statisticTime.substring(11, 16).replace(/:/g, "");
                         });
                         i++;
 

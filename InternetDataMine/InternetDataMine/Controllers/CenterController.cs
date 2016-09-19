@@ -78,7 +78,14 @@ namespace InternetDataMine.Controllers
         {
             return View();
         }
-
+        public ActionResult KSYLData()
+        {
+            return View();
+        }
+        public ActionResult HZSGData()
+        {
+            return View();
+        }
         /// <summary>
         /// 通过前台传来的页面名称，加载参数
         /// </summary>

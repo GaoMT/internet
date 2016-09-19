@@ -47,9 +47,9 @@ namespace InternetDataMine.Models
                     }
                    
                     DataRow dr = dt.Rows[i];
-                    json += string.Format(@"{{ " + "\"id\": \"{0}\",\"text\": \"{1}\",\"AQJKState\": \"{2}\",\"RYGLState\": \"{3}\",\"minecode\":\"{4}\"}}",dr["rowid"].ToString(),
-                                          dr["SimpleName"].ToString(), dr["AQJKState"].ToString(), dr["RYGLState"].ToString(), dr["MineCode"].ToString());
-
+                    json += string.Format(@"{{ " + "\"id\": \"{0}\",\"text\": \"{1}\",\"minecode\":\"{4}\" ,\"children\":[{{\"id\":\"AQJK\",\"text\":\"安全监控\",\"State\":\"{2}\"}},{{\"id\":\"RYGL\",\"text\":\"人员管理\",\"State\":\"{3}\"}} ,{{\"id\":\"KSYL\",\"text\":\"矿山压力\",\"State\":\"{5}\"}} ,{{\"id\":\"HZSG\",\"text\":\"火灾束管\",\"State\":\"{6}\"}}            ]}}", dr["rowid"].ToString(),
+                                          dr["SimpleName"].ToString(), dr["AQJKState"].ToString(), dr["RYGLState"].ToString(), dr["MineCode"].ToString(), dr["ksylstate"].ToString(), dr["hzsgstate"].ToString());
+                    //若要增加子树，在}前增加 ,\"children\":[{{\"id\":\"Id\",\"text\":\"Name\"}}]  (实际为"children":[{"id":"Id"}] 代码中要{{}}两个大括号，用{}转义，而不能用\转义     )
                     if (i < dt.Rows.Count - 1)
                     {
                         //json += ",";

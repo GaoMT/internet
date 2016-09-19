@@ -1200,6 +1200,8 @@
     <Content Include="Views\Chart\AnalogQantity.cshtml" />
     <Content Include="Views\ProcessLog\ProcessLogQuery.cshtml" />
     <Content Include="Views\Chart\SwitchQantity.cshtml" />
+    <Content Include="Views\Center\KSYLData.cshtml" />
+    <Content Include="Views\Center\HZSGData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
