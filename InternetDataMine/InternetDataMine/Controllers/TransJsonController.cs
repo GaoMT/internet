@@ -23,17 +23,28 @@ namespace InternetDataMine.Controllers
         //    return View(model);
         //}
 
-        public void  TransJsonToTreeList(string SystemType, string DataType, string MineCode, string SensorNum, string SensorType, string DropListName, string ReportName, string startRow, string rows, string StartTime, string EndTime, string TypeName, string DropName, string Position)
+        public void  TransJsonToTreeList(string SystemType, string page,string DataType, string MineCode, string SensorNum, string SensorType, string DropListName, string ReportName, string startRow, string rows, string StartTime, string EndTime, string TypeName, string DropName, string Position)
         {
             try
             {
             int StartRow = 0;
             int Rows = 0;
-            if (startRow != null && rows != null && startRow != "" && rows != "" && startRow != "NaN" && startRow != "NaN")
+            int Page = 0;
+          //  if (startRow != null && rows != null && startRow != "" && rows != "" && startRow != "NaN" && startRow != "NaN")
+                if (!string.IsNullOrEmpty(rows))
             {
-                StartRow = int.Parse(startRow);
+              //  StartRow = int.Parse(startRow);
                 Rows = int.Parse(rows);
             }
+                if (!string.IsNullOrEmpty(startRow))
+                {
+                    StartRow = int.Parse(startRow);
+                }
+                if (!string.IsNullOrEmpty(page))
+                {
+                    Page = Convert.ToInt32(page);
+                    StartRow = Rows * (Page - 1) + 1;
+                }
             if (DataType == "AQGZ")
             {
                 string a = DropName;

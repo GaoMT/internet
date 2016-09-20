@@ -470,7 +470,8 @@ namespace InternetDataMine.Models
                 //    TotalRows = int.Parse(Results[0].Rows[0][0].ToString());
                 //}
               //datagrid的格式是 total:  rows
-                return "{\"totalrows\": " + TotalRows + ",\"data\":" + json + "}";
+                return "{\"total\": " + TotalRows + ",\"rows\":" + json + "}";
+               // return "{\"totalrows\": " + TotalRows + ",\"data\":" + json + "}";   //这是supcan中的
                 //return JsonConvert.SerializeObject(Result);
             }
         }
