@@ -37,7 +37,6 @@
 <script type="text/javascript">
     var rows = 0;
     $(function () {
-        debugger;
         $('#dg').datagrid({
             pagination: true,
             autoRowHeight: false,
@@ -49,9 +48,6 @@
             layout: ['first', 'links', 'next','last','refresh'],
             displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
         });
-        var total = $('#dg').datagrid('getPager').pagination("options").total;
-        var count = parseInt(total / rows);
-        alert(total + ";" + count);
         //setInterval("$('#dg').datagrid('getPager').pagination('select', 2)", 1000);
 
     });
@@ -100,17 +96,9 @@
 
     //加载数据
     function LoadData() {
-        //var urlq = "../TransJson/TransJsonToTreeList?DataType=RealData_KY&startRow=@@startRow&rows=@@rows" + getUrlStafix();
-        //if (minecode != null)
-        //    urlq = urlq + "&minecode=" + minecode;
-        //var hBbar = AF.func("GetHandle", "bBar");//获取bBar句柄
-        //AF.func(hBbar + "SetObjectProp", "ID0\r\n dataURL  \r\n" + urlq + "\r\n mode=asynch"); //让Treelist异步加载数据
-      
-       // var startRow = (opts.pageNumber - 1) * rows + 1;
          $("#dg").datagrid({
             
-            //url: "../TransJson/TransJsonToTreeList?DataType=RealData_KY&startRow=" + startRow + "&rows=" + rows + getUrlStafix(),//page当前页数
-             url: "../TransJson/TransJsonToTreeList?DataType=RealData_KY&rows="+rows + getUrlStafix(),//page当前页数
+             url: "../TransJson/TransJsonToTreeList?DataType=RealData_KY&rows="+rows + getUrlStafix(),
 
 
         });
