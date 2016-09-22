@@ -23,7 +23,8 @@ namespace InternetDataMine.Controllers
         //    return View(model);
         //}
 
-        public void  TransJsonToTreeList(string SystemType, string page,string DataType, string MineCode, string SensorNum, string SensorType, string DropListName, string ReportName, string startRow, string rows, string StartTime, string EndTime, string TypeName, string DropName, string Position)
+
+        public void  TransJsonToTreeList(string SystemType, string page,string DataType, string MineCode, string SensorNum, string SensorType, string DropListName, string ReportName, string startRow, string rows, string StartTime, string EndTime, string TypeName, string DropName, string Position,string isDG)
         {
             try
             {
@@ -55,10 +56,19 @@ namespace InternetDataMine.Controllers
             Response.ExpiresAbsolute = DateTime.Now.AddDays(-1);
             Response.Expires = 0;
             Response.CacheControl = "no-cache";
-            Response.AddHeader("Pragma", "No-Cache");    
-                
+            Response.AddHeader("Pragma", "No-Cache");
+                //新增一个标记位  主要区别在于 datagrid返回json格式与supcan返回格式不同
+            if (isDG == "y")
+            {
+                Response.Write(model.GetDataJsonDG);
+
+            }
+            else {
+
+                Response.Write(model.GetDataJson);
+            }
             //数据处理并发送数据到前台
-            Response.Write(model.GetDataJson);
+        
             
             //通知前台，数据发送完毕
             Response.Flush();

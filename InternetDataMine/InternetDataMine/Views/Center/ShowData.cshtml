@@ -20,11 +20,269 @@
     }
 }
 @Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/easyui")
+@Styles.Render("~/Content/icon")
+<link rel="stylesheet" type="text/css" href="../Content/themes/metro-orange/easyui.css" title="orange">
+<link rel="stylesheet" type="text/css" href="../Content/themes/metro-red/easyui.css" title="pink">
+<link rel="stylesheet" type="text/css" href="../Content/themes/ui-cupertino/easyui.css" title="blue">
+<link rel="stylesheet" type="text/css" href="../Content/themes/metro-gray/easyui.css" title="gray">
+<link rel="stylesheet" type="text/css" href="../Content/themes/metro-green/easyui.css" title="green">
+<script src="~/Scripts/CompanyInfo.js" type="text/javascript"></script>
+@Scripts.Render("~/bundles/common")
 @*<script src="~/bundles/supcan"></script>
 <script src="~/bundles/jquery"></script>*@
-<script type="text/javascript" src="../../binary/dynaload.js?20"> </script>
-<script type="text/javascript">
+@*<script type="text/javascript" src="../../binary/dynaload.js?20"> </script>*@
 
+<body>
+    <div id="myGrid" class="easyui-panel" data-options="fit:true">
+        <div style="height:96%">
+            <table id="dg" style="height:100%" class="easyui-datagrid">
+            </table>
+        </div>
+        
+    </div>
+    <div id="toolbar">
+        <input type="checkbox" id="StopReflesh"  onclick="ClickReflesh(this)"/><label for="StopReflesh">停止刷新</label>
+        &nbsp;  &nbsp;  &nbsp;
+        @if (@UserMineCode == "" || @UserMineCode == null)
+        {
+            <span>煤矿名称:</span>
+    <select class="easyui-combogrid"  id="MineCodeS" style="width:150px" data-options="
+			panelWidth: 240,
+			idField: 'MineCode',
+			textField: 'SimpleName',
+			url: '../TransJson/TransJsonToTreeList?DataType=MineName&isDG=y',
+			method: 'get',
+			columns: [[
+				{field:'MineCode',title:'煤矿编号',width:60,align:'center'},
+				{field:'TmpID',title:'ID号',width:120,align:'center',hidden:true},
+				{field:'SimpleName',title:'矿名',width:120,align:'center'},
+				{field:'city',title:'归属城市',width:60,align:'center'},
+			]], fitColumns: true,
+		"></select>
+           
+        }
+        @switch (PreLoadData)
+        {
+            case "RealData":
+                 
+                <span>    &nbsp;  &nbsp;  &nbsp;设备名：</span>
+        <select class="easyui-combogrid" id="TypeCodeS" style="width:150px" data-options="
+			panelWidth: 300,
+			idField: 'TypeCode',
+			textField: 'TypeName',
+			url: '../TransJson/TransJsonToTreeList?DataType=DevType&isDG=y',
+			method: 'get',
+			columns: [[
+				{field:'TypeCode',title:'设备编号',width:60,align:'center'},
+				{field:'TypeName',title:'设备名',width:120,align:'center'},
+				{field:'Unit',title:'单位',width:60,align:'center'},
+				{field:'Type',title:'类型',width:60,align:'center'},
+			]], fitColumns: true,
+		"></select>
+                <span>    &nbsp;  &nbsp;  &nbsp;测点编号：</span>
+            <select class="easyui-combogrid" id="SensorNumS" style="width:150px" data-options="
+			                    panelWidth: 350,
+			                    idField: 'SensorNum',
+			                    textField: 'Place',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=Sensor&isDG=y',
+			                    method: 'get',
+			                    columns: [[
+				                    {field:'SensorNum',title:'测点编号',width:60,align:'center'},
+				                    {field:'MineCode',title:'煤矿编号',width:10,align:'center',hidden:true},
+				                    {field:'TypeName',title:'设备名',width:80,align:'center'},
+				                    {field:'Place',title:'安装地点',width:100,align:'center'},
+				                    {field:'Unit',title:'单位',width:60,align:'center'},
+			                    ]], fitColumns: true,
+		                    "></select>
+
+                break;
+
+        }
+        <a href="javascript:void(0)" id="DGquery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="DGquery()" style="width:80px">查询</a>
+
+    </div>
+
+    <script type="text/javascript">
+        //根据时间，生成URl后缀，防止URL数据不刷新
+        function getUrlStafix() {
+            var myDate = new Date();
+            return "&myDate=" + myDate.getFullYear() + myDate.getMonth() + myDate.getDate() + myDate.getHours() + myDate.getMinutes() + myDate.getSeconds();
+        }
+        
+
+        var rows = 0;
+      
+    
+        $(function () {
+
+            //根据PreLoadData选择不同的 列
+            var colunms = [];
+            var hideThis = false;
+            if ('@UserMineCode' == null || '@UserMineCode' == "")
+            {
+                hideThis = true;
+            }
+            
+            switch ('@PreLoadData') {
+                case "RealData":
+                    if ('@PageSystemType' == 1) {
+                        colunms.push({ field: "TmpID", title: "ID号", hidden: hideThis });
+                        colunms.push({ field: "SimpleName", title: "煤矿名称", width: 200, hidden: hideThis });
+                        colunms.push({ field: "SensorNum", title: "测点编号", width: 200 });
+                        colunms.push({ field: "TypeName", title: "设备名", width: 200 });
+                        colunms.push({ field: "Place", title: "安装地点", width: 200 });
+                        colunms.push({ field: "ShowValue", title: "测点值", width: 200 });
+                        colunms.push({ field: "Unit", title: "单位", width: 200 });
+                        colunms.push({ field: "Datetime", title: "监测时间", width: 200 });
+                        colunms.push({ field: "ValueState", title: "状态", width: 200 });
+                    }
+                    else {
+                        colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                        colunms.push({ field: "SimpleName", title: "煤矿名称", width: 200, hidden: hideThis });
+                        colunms.push({ field: "SensorNum", title: "测点编号", width: 200 });
+                        colunms.push({ field: "TypeName", title: "测点名称", width: 200 });
+                        colunms.push({ field: "Place", title: "安装地点", width: 200 });
+                        colunms.push({ field: "Unit", title: "单位", width: 200 });
+                    }
+                    break;
+                case "AQBJ":
+
+
+                    break;
+            };
+            //var myHeight = parseInt($("#myGrid")[0].style.height.replace("px", ""));
+            rows = parseInt((@TotalHeight - 50) / 26);
+            $("#dg").datagrid({
+                pageSize: rows,
+            });
+            var grid = $('#dg');
+
+            $("#dg").datagrid({
+                fitColumns: true,
+                columns: [colunms],
+                toolbar: "#toolbar"
+            });
+            $("#dg").datagrid({
+                title: "实时数据",
+                pagination: true,
+                autoRowHeight: false,
+                pageList: [rows],
+                url: "../TransJson/TransJsonToTreeList?DataType=RealData&isDG=y&rows=" + rows + getUrlStafix(),
+                singleSelect: true,
+                rownumbers: true,
+
+            });
+            var p = $("#dg").datagrid("getPager");
+            p.pagination({
+                showPageList: false,
+                beforePageText: '第',//页数文本框前显示的汉字
+                layout: ['first', 'prev', 'links', 'next', 'last', 'refresh', 'manual'],
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+                afterPageText: '页    共 {pages} 页',
+            });
+
+            timedCount();
+        });
+        var i=1;
+        //自动刷新换页方法
+        function timedCount() {
+            var grid = $('#dg');
+            var options = grid.datagrid('getPager').data("pagination").options;
+            var curr = options.pageSize;
+            var total = options.total;
+            var count = Math.ceil(total / curr);
+            if (i > count)
+            { i = 1; }
+            else i++
+
+
+            $('#dg').datagrid('getPager').pagination('select', i);
+
+            t = setTimeout("timedCount()", 10000)
+        }
+        //点击停止刷新时间
+        function ClickReflesh(obj) {
+            if (obj.checked) {
+                clearTimeout(t);
+
+            }
+            else {
+                timedCount()
+            }
+        }
+        function DGquery()
+        {
+            var MineCode;
+            var TypeCode;
+            var SensorNum;
+          var   url = "../TransJson/TransJsonToTreeList?isDG=y&DataType=" + '@PreLoadData';
+            if ($("#MineCodeS").length > 0)
+            {
+                if ($("#MineCodeS").combogrid("grid").datagrid("getSelected") != null)
+
+                {
+                    MineCode = $("#MineCodeS").combogrid("grid").datagrid("getSelected").MineCode;
+                    url += "&MineCode=" + MineCode;
+                }
+            }
+            if ($("#TypeCodeS").length > 0)
+            {
+                if ($("#TypeCodeS").combogrid("grid").datagrid("getSelected") != null)
+                {
+                    TypeCode = $("#TypeCodeS").combogrid("grid").datagrid("getSelected").TypeCode;
+                    url += "&SensorType=" + TypeCode;
+                }
+            }
+            if ($("#SensorNumS").length > 0) {
+                if ($("#SensorNumS").combogrid("grid").datagrid("getSelected") != null)
+                {
+                    SensorNum = $("#SensorNumS").combogrid("grid").datagrid("getSelected").SensorNum;
+                    url += "&SensorNum=" + SensorNum;
+                }
+            }
+            
+            $("#dg").datagrid({
+                url:url
+
+            });
+           
+        }
+    </script>
+</body>
+@*<script type="text/javascript">
+ 
+    $(function () {
+
+        var colunms=""
+        switch('@PreLoadData')
+        {
+            case "RealData":
+                colunms = "{field:'TmpID',title:'ID号',width:5,hidden:'true'}," +
+                  "{field:'SimpleName',title:'煤矿名称',width:15}," +
+                     "{field:'SensorNum',title:'测点编号',width:15}," +
+                        "{field:'TypeName',title:'设备名',width:15}," +
+                  "{field:'Place',title:'安装地点',width:15}," +
+                   "{field:'ShowValue',title:'测点值',width:15}," +
+                  "{field:'unit',title:'单位',width:15}," +
+                  "{field:'datetime',title:'监测时间',width:15}," +
+                  "{field:'ValueState',title:'状态',width:15},";
+                break;
+    
+        }
+
+
+        $('#dg').datagrid({
+            pagination: true,
+            autoRowHeight: false,
+            rownumbers: true,
+            pageList: 20,
+        singleSelect: true, 
+        url: "../TransJson/TransJsonToTreeList?DataType=RealData&isDG=y&rows=rows"  + getUrlStafix(),
+            columns: colunms
+
+        });
+    });
     //是否启用自动刷新功能
     var isRefresh = 0;
     var count = 0;
@@ -250,10 +508,10 @@
         var mydate = new Date("");
     }
 
-</script>
+</script>*@
 
 
-<body style="margin:5px 0 0 5px;padding:0 0 0 0;">
+@*<body style="margin:5px 0 0 5px;padding:0 0 0 0;">
         <div style="height:30px">
             <script type="text/javascript">
                 insertFreeForm('Title', '');
@@ -274,5 +532,5 @@
                 }
             </script>
         </div>
-</body>
+</body>*@
 

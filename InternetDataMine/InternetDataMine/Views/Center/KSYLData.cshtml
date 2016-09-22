@@ -24,8 +24,8 @@
                     <th field="TypeName" width="10%">设备名</th>
                     <th field="Place" width="20%">安装地点</th>
                     <th field="ShowValue" width="8%">测点值</th>
-                    <th field="unit" width="5%">单位</th>
-                    <th field="datetime" width="20%">监测时间</th>
+                    <th field="Unit" width="5%">单位</th>
+                    <th field="Datetime"   width="20%">监测时间</th>
                     <th field="ValueState" width="10%">状态</th>
 
                 </tr>
@@ -36,26 +36,31 @@
 </div>
 <script type="text/javascript">
     var rows = 0;
+    var p
     $(function () {
         $('#dg').datagrid({
             pagination: true,
             autoRowHeight: false,
             rownumbers: true,
-            pageList: [rows]
+            pageList: [rows],
+            singleSelect:true
         });
-        var p = $('#dg').datagrid('getPager');
+       p = $('#dg').datagrid('getPager');
         $(p).pagination({
-            layout: ['first', 'links', 'next','last','refresh'],
-            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+            beforePageText: '第',//页数文本框前显示的汉字 
+            layout: ['first', 'prev', 'links', 'next', 'last', 'refresh', 'manual'],
+            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+            afterPageText: '页    共 {pages} 页',
+            showPageList:false,
         });
-        //setInterval("$('#dg').datagrid('getPager').pagination('select', 2)", 1000);
+        timedCount()
 
+        //这个是刷新 当前页面 
+      //  setInterval("$('#dg').datagrid('getPager').pagination('select')", 5000);
+        
     });
 
-
-
-
-
+ 
 
     //获取URL参数的值
     function getParameterByName(name) {
@@ -73,20 +78,45 @@
     //改变每页总行数
     function ChangeRowsLength() {
         var myHeight = parseInt($("#myGrid")[0].style.height.replace("px", ""));
-        rows = parseInt((myHeight - 80) / 27);
+        rows = parseInt((myHeight - 100) / 27);
         $("#dg").datagrid({
             pageSize: rows,
         });
+     
+       // var options = grid.datagrid('getPager').data("pagination").options;
+        //var curr = options.pageNumber;
+        //var total = options.total;
+    }
+  
+    var i = 1;
+    var t;
+    function timedCount() {
+        var grid = $('#dg');
+        var options = grid.datagrid('getPager').data("pagination").options;
+        var curr = options.pageSize;
+        var total = options.total;
+        var count = Math.ceil(total / curr);
+        if (i > count)
+        { i = 1; }
+        else i++
+        
+       
+        $('#dg').datagrid('getPager').pagination('select', i);
+   
+        t = setTimeout("timedCount()", 10000)
     }
 
-    //function stopRefresh(obj) {
-    //    if (obj.checked) {
-    //        AF.func("bBar.timerRoundPage", "ID0 \r\n 0");
-    //    }
-    //    else {
-    //        AF.func("bBar.timerRoundPage", "ID0 \r\n 10000");
-    //    }
-    //}
+
+  // var reflesh= setInterval("$('#dg').datagrid('getPager').pagination('select')", 5000);
+    function stopRefresh(obj) {
+        if (obj.checked) {
+        clearTimeout(t);
+
+        }
+        else {
+            timedCount()
+        }
+    }
 
 
     function DivChange() {
@@ -97,11 +127,8 @@
     //加载数据
     function LoadData() {
          $("#dg").datagrid({
-            
-             url: "../TransJson/TransJsonToTreeList?DataType=RealData_KY&rows="+rows + getUrlStafix(),
-
-
-        });
+             url: "../TransJson/TransJsonToTreeList?DataType=RealData_KY&isDG=y&rows=" + rows + getUrlStafix(),
+         });
     
     }
 

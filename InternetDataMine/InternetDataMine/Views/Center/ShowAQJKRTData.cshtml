@@ -114,28 +114,28 @@
         {
             $("#myIframeAQ")[0].src = "../Center/AQJKRTData?minecode=" + minecode;
             $("#myIframeRY")[0].src = "../Person/RealTimePersonInMine?minecode=" + minecode;
-            //$("#myIframeKY")[0].src = "../Center/KSYLData?minecode=" + minecode;
-            //$("#myIframeHG")[0].src = "../Center/HZSGData?minecode=" + minecode;
+            $("#myIframeKY")[0].src = "../Center/KSYLData?minecode=" + minecode;
+            $("#myIframeHG")[0].src = "../Center/HZSGData?minecode=" + minecode;
         }
         else
         {
             if (node == "") {
                 $("#myIframeAQ")[0].src = "../Center/AQJKRTData";
                 $("#myIframeRY")[0].src = "../Person/RealTimePersonInMine";
-                //$("#myIframeKY")[0].src = "../Center/KSYLData";
-                //$("#myIframeHG")[0].src =  "../Center/HZSGData";
+                $("#myIframeKY")[0].src = "../Center/KSYLData";
+                $("#myIframeHG")[0].src =  "../Center/HZSGData";
             }
             else {
                 if (node.minecode != 0) {
                     $("#myIframeAQ")[0].src = "../Center/AQJKRTData?minecode=" + node.minecode;
                     $("#myIframeRY")[0].src = "../Person/RealTimePersonInMine?minecode=" + node.minecode;
-                    //$("#myIframeKY")[0].src = "../Center/KSYLData?minecode=" + node.minecode;
-                    //$("#myIframeHG")[0].src =  "../Center/HZSGData?minecode=" + node.minecode;
+                    $("#myIframeKY")[0].src = "../Center/KSYLData?minecode=" + node.minecode;
+                    $("#myIframeHG")[0].src =  "../Center/HZSGData?minecode=" + node.minecode;
                 } else {
                     $("#myIframeAQ")[0].src = "../Center/AQJKRTData";
                     $("#myIframeRY")[0].src = "../Person/RealTimePersonInMine";
-                    //$("#myIframeKY")[0].src = "../Center/KSYLData"; //"../Center/KSYLData";
-                    //$("#myIframeHG")[0].src= "../Center/HZSGData";
+                    $("#myIframeKY")[0].src = "../Center/KSYLData"; //"../Center/KSYLData";
+                    $("#myIframeHG")[0].src= "../Center/HZSGData";
                 }
             }
         }
@@ -156,12 +156,12 @@
         <div class="easyui-panel" title='人员管理-实时数据' data-options="collapsed:false,collapsible:true,fit:true">
             <iframe frameborder="0" id="myIframeRY" style="width: 100%; height: 99%; border: 0px;" src="../Center/KSYLData"></iframe>
         </div>
-        @*<div class="easyui-panel" title='矿山压力-实时数据' data-options="collapsed:false,collapsible:true,fit:true">
+        <div class="easyui-panel" title='矿山压力-实时数据' data-options="collapsed:false,collapsible:true,fit:true">
             <iframe frameborder="0" id="myIframeKY" style="width: 100%; height: 99%; border: 0px;" src="../Center/KSYLData"></iframe>
         </div>
         <div class="easyui-panel" title='火灾束管-实时数据' data-options="collapsed:false,collapsible:true,fit:true">
             <iframe frameborder="0" id="myIframeHG" style="width: 100%; height: 99%; border: 0px;" src="../Center/HZSGData"></iframe>
-        </div>*@
+        </div>
         
        
     </div>
