@@ -91,21 +91,19 @@
 
 
 
-    var i = 1;
+    var i ;
     var t;
     function timedCount() {
         var grid = $('#dg');
         var options = grid.datagrid('getPager').data("pagination").options;
+        i = options.pageNumber;//i为当前页
         var curr = options.pageSize;
         var total = options.total;
         var count = Math.ceil(total / curr);
-        if (i > count)
+        if (i == count)
         { i = 1; }
         else i++
-
-
         $('#dg').datagrid('getPager').pagination('select', i);
-
         t = setTimeout("timedCount()", 10000)
     }
 
