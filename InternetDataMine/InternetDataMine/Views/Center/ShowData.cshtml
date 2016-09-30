@@ -67,7 +67,7 @@
 				{field:'MineCode',title:'煤矿编号',width:60,align:'center'},
 				{field:'TmpID',title:'ID号',width:120,align:'center',hidden:true},
 				{field:'SimpleName',title:'矿名',width:120,align:'center'},
-				{field:'city',title:'归属城市',width:60,align:'center'},
+				{field:'City',title:'归属城市',align:'center'},
 			]], fitColumns: true,
 		"></select>
 
@@ -76,7 +76,15 @@
         {
             case "RealData":
             case "AQBJ":
-
+            case "AQGZ":
+            case "AQKD":
+            case "AQDD":
+                case "AQBJ_KY":
+                case "AQGZ_KY":
+                case "RealData_KY":
+                case "AQBJ_HG":
+                case "AQGZ_HG":
+            case "RealData_HG":
         <span>     &nbsp;设备名：</span>
         <select class="easyui-combogrid" id="TypeCodeS" style="width:150px" data-options="
 			panelWidth: 300,
@@ -107,11 +115,48 @@
 			                    ]], fitColumns: true,
 		                    "></select>
                 break;
-            case "AQBJHis":
+                
+                
+                case "PointSet":
+                         <span>    &nbsp;测点类型：</span>
+        <select class="easyui-combogrid" id="TypeCodeS" style="width:150px" data-options="
+			                    panelWidth: 200,
+			                    idField: 'SensorNum',
+			                    textField: 'Place',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=PointType&isDG=y',
+			                    method: 'get',
+			                    columns: [[
+				                    {field:'TypeName',title:'测点类型',width:100,align:'center'},
+				                    {field:'TypeCode',title:'编号',width:100,align:'center'},
+			                    ]], fitColumns: true,
+		                    "></select>
+                <span>    &nbsp;测点编号：</span>
+        <select class="easyui-combogrid" id="SensorNumS" style="width:150px" data-options="
+			                    panelWidth: 350,
+			                    idField: 'SensorNum',
+			                    textField: 'Place',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=Sensor&isDG=y',
+			                    method: 'get',
+			                    columns: [[
+				                    {field:'SensorNum',title:'测点编号',width:60,align:'center'},
+				                    {field:'MineCode',title:'煤矿编号',width:10,align:'center',hidden:true},
+				                    {field:'TypeName',title:'设备名',width:80,align:'center'},
+				                    {field:'Place',title:'安装地点',width:100,align:'center'},
+				                    {field:'Unit',title:'单位',width:60,align:'center'},
+			                    ]], fitColumns: true,
+		                    "></select>
+                break;
+                case "AQBJHis":
             case  "AQKDHis":
             case "AQGZHis":
             case "AQDDHis":
             case "AQMNL_1M":
+            case "AQBJHis_KY":
+
+            case "AQGZHis_KY":
+            case "AQBJHis_HG":
+
+            case "AQGZHis_HG":
         <span>     &nbsp;设备名：</span>
         <select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
 			panelWidth: 300,
@@ -149,6 +194,9 @@
 
                case "AQMNL_1D":
                case "AQKGL_Day":
+
+               case "AQKGL_Day_HG":
+               case "AQKGL_Day_KY":
         <span>     &nbsp;设备名：</span>
         <select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
 			panelWidth: 300,
@@ -166,7 +214,7 @@
         <span>  &nbsp;开始时间</span>
         <input class="easyui-datebox" id="StartTime" style="width:150px" />
                break;
-
+               case "AQKGL_Week_HG":
                case "AQKGL_Week":
         <span>     &nbsp;设备名：</span>
         <select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
@@ -187,13 +235,205 @@
         <span>  &nbsp;截止日期</span>
         <input class="easyui-datebox" id="EndTime" style="width:150px" />
                break;
+               //人员
+               //Person_Bar_RT
+               case "RealInPeople":
+               case "RealTZYC":
+        <span>     &nbsp;区域名称：</span>
+        <select class="easyui-combogrid" id="SensorNumS" style="width:100px" data-options="
+			        panelWidth: 360,
+			        idField: 'AreaCode',
+			        textField: 'AreaName',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			        method: 'get',
+			        columns: [[
+				        {field:'TmpID',title:'ID号',width:60,align:'center',hidden:true},
+				        {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
+				        {field:'AreaType',title:'区域类型',width:60,align:'center'},
+				        {field:'AreaCode',title:'区域代码',width:60,align:'center',hidden:true},
+                   {field:'AreaName',title:'区域名称',width:60,align:'center'},
+		 		        {field:'Time',title:'最近更新时间',width:140,align:'center'},
+			        ]], fitColumns: true,
+		        "></select>
 
+        <span>     &nbsp;分站名称：</span>
+        <select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
+			        panelWidth: 440,
+			        idField: 'StationCode',
+			        textField: 'StationName',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYStation&isDG=y',
+			        method: 'get',
+			        columns: [[
+				        {field:'StationCode',title:'分站编号',width:100,align:'center'},
+				        {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
+				        {field:'StationName',title:'分站名称',width:100,align:'center'},
+				        {field:'Place',title:'安装地址',width:100,align:'center'},
+                {field:'Time',title:'最近更新时间',width:140,align:'center'},
+			        ]], fitColumns: true,
+		        "></select>
+               break;
+
+               case "RYXX":
+               case "RealCS":
+               case "PreRoute":
+                <span>     &nbsp;标识卡号：</span>
+<select class="easyui-combogrid" id="SensorNumS" style="width:100px" data-options="
+			        panelWidth: 440,
+			        idField: 'JobCardCode',
+			        textField: 'JobCardCode',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYXX&isDG=y',
+			        method: 'get',
+			        columns: [[
+				        {field:'JobCardCode',title:'标识卡',width:100,align:'center'},
+				        {field:'Name',title:'姓名',width:100,align:'center'},
+				        {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
+				        {field:'city',title:'归属城市',width:100,align:'center',hidden:true},
+			        ]], fitColumns: true,
+		        "></select>
+
+
+             <span>     &nbsp;姓名：</span>
+<select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
+			        panelWidth: 440,
+			        idField: 'Name',
+			        textField: 'Name',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYXX&isDG=y',
+			        method: 'get',
+			        columns: [[
+				        {field:'JobCardCode',title:'标识卡',width:100,align:'center'},
+				        {field:'Name',title:'姓名',width:100,align:'center'},
+				        {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
+				        {field:'city',title:'归属城市',width:100,align:'center',hidden:true},
+			        ]], fitColumns: true,
+		        "></select>
+
+               break;
+
+
+               case "RealCY":
+                 <span>     &nbsp;区域名称：</span>
+            <select class="easyui-combogrid" id="SensorNumS" style="width:100px" data-options="
+			        panelWidth: 360,
+			        idField: 'AreaCode',
+			        textField: 'AreaName',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			        method: 'get',
+			        columns: [[
+				        {field:'TmpID',title:'ID号',width:60,align:'center',hidden:true},
+				        {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
+				        {field:'AreaType',title:'区域类型',width:60,align:'center'},
+				        {field:'AreaCode',title:'区域代码',width:60,align:'center',hidden:true},
+                   {field:'AreaName',title:'区域名称',width:60,align:'center'},
+		 		        {field:'Time',title:'最近更新时间',width:140,align:'center'},
+			        ]], fitColumns: true,
+		        "></select>
+               break;
+
+               //对，他就是空的
+               case "RealTXState":
+               case "RYStation":
+               break;
+               case "RYAreaInfo":
+                <span>     &nbsp;区域：</span>
+            <select class="easyui-combogrid" id="SensorNumS" style="width:100px" data-options="
+			        panelWidth: 360,
+			        idField: 'AreaCode',
+			        textField: 'AreaName',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			        method: 'get',
+			        columns: [[
+				        {field:'TmpID',title:'ID号',width:60,align:'center',hidden:true},
+				        {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
+				        {field:'AreaType',title:'区域类型',width:60,align:'center'},
+				        {field:'AreaCode',title:'区域代码',width:60,align:'center',hidden:true},
+                   {field:'AreaName',title:'区域名称',width:60,align:'center'},
+		 		        {field:'Time',title:'最近更新时间',width:140,align:'center'},
+			        ]], fitColumns: true,
+		        "></select>
+               
+               <span>     &nbsp;核定人数：</span>
+<select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
+			                    panelWidth: 100,
+			                    idField: 'Workers',
+			                    textField: 'Workers',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=RatedNumber&isDG=y',
+			                    method: 'get',
+			                    columns: [[
+                    {field:'Workers',title:'额定人数',width:60,align:'center'},
+			                    ]], fitColumns: true,
+		                    "></select>
+
+               break;
+               case "HisTrack":
+
+                    <span>  &nbsp;开始时间</span>
+        <input class="easyui-datetimebox" id="StartTime" style="width:150px" />
+        <span>  &nbsp;结束时间</span>
+        <input class="easyui-datetimebox" id="EndTime" style="width:150px" />
+               break;
+               case "HisTrackInfo":
+               <span>     &nbsp;姓名：</span>
+<select class="easyui-combogrid" id="SensorNumS" style="width:100px" data-options="
+			                    panelWidth: 300,
+			                    idField: 'JobCardCode',
+			                    textField: 'Name',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			                    method: 'get',
+			                    columns: [[
+
+				                    {field:'JobCardCode',title:'标识卡',width:60,align:'center'},
+				                    {field:'Name',title:'姓名',width:60,align:'center'},
+				                    {field:'SimpleName',title:'煤矿名称',width:60,align:'center'},
+                               {field:'city',title:'归属城市',width:120,align:'center',hidden:true},
+			                    ]], fitColumns: true,
+		                    "></select>
+                    <span>  &nbsp;开始时间</span>
+        <input class="easyui-datetimebox" id="StartTime" style="width:150px" />
+        <span>  &nbsp;结束时间</span>
+        <input class="easyui-datetimebox" id="EndTime" style="width:150px" />
+               break;
+               case "HisCS":
+               case "HisCY":
+               case "HisTZYC":
+                        <span>     &nbsp;区域名称：</span>
+            <select class="easyui-combogrid" id="SensorNumS" style="width:100px" data-options="
+			                    panelWidth: 300,
+			                    idField: 'AreaCode',
+			                    textField: 'AreaName',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			                    method: 'get',
+			                    columns: [[
+                    {field:'SimpleName',title:'煤矿名称',width:60,align:'center'},
+				                    {field:'AreaType',title:'区域类型',width:60,align:'center'},
+				                    {field:'AreaCode',title:'区域代码',width:60,align:'center',hidden:true},
+                               {field:'AreaName',title:'区域名称',width:60,align:'center'},
+                    {field:'time',title:'最近更新时间',width:120,align:'center'},
+			                    ]], fitColumns: true,
+		                    "></select>
+              <span>     &nbsp;分站名称：</span>
+        <select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
+			        panelWidth: 300,
+			        idField: 'StationCode',
+			        textField: 'StationName',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYStation&isDG=y',
+			        method: 'get',
+			        columns: [[
+				        {field:'StationCode',title:'分站编号',width:60,align:'center'},
+				        {field:'SimpleName',title:'煤矿名称',width:120,align:'center'},
+				        {field:'StationName',title:'分站名称',width:60,align:'center'},
+				        {field:'Place',title:'安装地址',width:60,align:'center'},
+                {field:'Time',title:'最近更新时间',width:60,align:'center'},
+			        ]], fitColumns: true,
+		        "></select>
+                   <span>  &nbsp;开始时间</span>
+        <input class="easyui-datetimebox" id="StartTime" style="width:150px" />
+        <span>  &nbsp;结束时间</span>
+        <input class="easyui-datetimebox" id="EndTime" style="width:150px" />
+               break;
         }
+        <a href="javascript:void(0)" id="DGquery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="DGquery()" style="width:80px">查询</a>
 
-
-            <a href="javascript:void(0)" id="DGquery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="DGquery()" style="width:80px">查询</a>
-
-        </div>
+</div>
 
         <script type="text/javascript">
         //根据时间，生成URl后缀，防止URL数据不刷新
@@ -217,7 +457,9 @@
             //根据PreLoadData  选择不同的列
             switch ('@PreLoadData') {
                 case "RealData":
-                    if ('@PageSystemType' == 1) {
+                case "RealData_KY":
+                case "RealData_HG":
+                    if ('@PageSystemType' == 1 || '@PageSystemType' == 2 || '@PageSystemType' == 5) {
                         //实时通信状态取的是default的值
                         if ('@QueryDataPath'.indexOf("PointSet")>0) {
                             colunms.push({ field: "TmpID", title: "ID号", hidden: true });
@@ -233,10 +475,10 @@
                             colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 8 });
                             colunms.push({ field: "TypeName", title: "设备名", width: wid / 8 });
                             colunms.push({ field: "Place", title: "安装地点", width: wid / 8 });
-                            colunms.push({ field: "ShowValue", title: "测点值", width: wid / 8 });
-                            colunms.push({ field: "Unit", title: "单位", width: wid / 8 });
-                            colunms.push({ field: "Datetime", title: "监测时间", width: wid / 8 });
-                            colunms.push({ field: "ValueState", title: "状态", width: wid / 8 });
+                            colunms.push({ field: "ShowValue", title: "测点值", width: wid / 8, formatter: ShowValueC});
+                            colunms.push({ field: "Unit", title: "单位", width: wid / 12 });
+                            colunms.push({ field: "Datetime", title: "监测时间", width: wid / 7 });
+                            colunms.push({ field: "ValueState", title: "状态", width: wid / 8, formatter: ShowValueC });
                         }
                     }
                     else {
@@ -249,6 +491,8 @@
                     }
                     break;
                 case "AQBJ":
+                case "AQBJ_KY":
+                case "AQBJ_HG":
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis,width:wid/8 });
                     colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 8 });
@@ -277,16 +521,18 @@
                     colunms.push({ field: "continuoustime", title: "持续时长", width: wid / 12 });
                     break;
                 case "AQGZ":
+                case "AQGZ_KY":
+                case "AQGZ_HG":
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 8 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 9 });
                     colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 9 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 9 });
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 9 });
-                    colunms.push({ field: "ShowValue", title: "显示值", width: wid / 9 });
-                    colunms.push({ field: "Unit", title: "单位", width: wid / 9 });
-                    colunms.push({ field: "ValueState", title: "值状态", width: wid / 9 });
-                    colunms.push({ field: "DateTime", title: "故障开始时间", width: wid / 9 });
+                    colunms.push({ field: "ShowValue", title: "显示值", width: wid /12 });
+                    colunms.push({ field: "Unit", title: "单位", width: wid /12});
+                    colunms.push({ field: "ValueState", title: "值状态", width: wid / 12, formatter: ShowValueC });
+                    colunms.push({ field: "Datetime", title: "故障开始时间", width: wid / 7 });
                     colunms.push({ field: "continuoustime", title: "持续时长", width: wid /9});
                     break;
                 case "AQKD":
@@ -310,6 +556,8 @@
                     colunms.push({ field: "Unit", title: "单位", width: wid / 5 });
                     break;
                 case "AQBJHis":
+                case "AQBJHis_HG":
+                case "AQBJHis_KY":
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 11 });
@@ -339,8 +587,9 @@
                     colunms.push({ field: "measures", title: "措施", width: wid / 8 });
                     break;
 
-
+                case "AQGZHis_HG":
                 case "AQGZHis":
+                case "AQGZHis_KY":
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
@@ -358,16 +607,17 @@
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 8 });
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 8 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 8 });
-                    colunms.push({ field: "PowerDatetime", title: "断电时间", width: wid / 8 });
+                    colunms.push({ field: "PowerDatetime", title: "断电时间", width: wid / 8 });jiao
                     colunms.push({ field: "PowerEndDatetime", title: "复电时间", width: wid / 8 });
                     colunms.push({ field: "continuoustime", title: "持续时间", width: wid / 8 });
                     colunms.push({ field: "max", title: "断电最大值", width: wid / 8 });
                     colunms.push({ field: "maxTime", title: "断电最大值时刻", width: wid / 8 });
                     colunms.push({ field: "Min", title: "断电最小值", width: wid / 11, hidden: true });
                     colunms.push({ field: "MinTime", title: "断电最小值时刻", width: wid / 11, hidden: true });
-                    colunms.push({ field: "avg", title: "平均值", width: wid / 11 ,hidden:true});
-                    colunms.push({ field: "powerwhy", title: "断电原因", width: wid / 11 ,hidden:true});
-                    colunms.push({ field: "Measures", title: "措施", width: wid / 11 ,hidden:true});
+                    colunms.push({ field: "avg", title: "平均值", width: wid / 11, hidden: true });
+                    colunms.push({ field: "powerwhy", title: "断电原因", width: wid / 11, hidden: true });
+                    colunms.push({ field: "Measures", title: "措施", width: wid / 11, hidden: true });
+                    break;
                 case "AQMNL_1M":   //这里的sql要改
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
@@ -396,6 +646,9 @@
                     break;
                 case "AQKGL_Day":
                 case "AQKGL_Week":
+                case "AQKGL_Week_HG":
+                case "AQKGL_Day_HG":
+                case "AQKGL_Day_KY":
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 7 });
@@ -406,6 +659,198 @@
                     colunms.push({ field: "State1", title: "1态次数", width: wid / 7 });
                     colunms.push({ field: "State2", title: "2态次数", width: wid / 7 });
                     break;
+                case "RealInPeople":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
+                    colunms.push({ field: "JobCardCode", title: "标识卡", width: wid / 10 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 10 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 10 });
+                    colunms.push({ field: "Department", title: "部门", width: wid / 10 });
+                    colunms.push({ field: "StationName", title: "分站名称", width: wid / 10 });
+                    colunms.push({ field: "Place", title: "分站安装位置", width: wid / 10 });
+                    colunms.push({ field: "InTime", title: "下井时间", width: wid / 10 });
+                    colunms.push({ field: "continuoustime", title: "下井时长", width: wid / 10 });
+                    colunms.push({ field: "InNowStTime", title: "进入分站时间", width: wid / 10 });
+                    break;
+
+                case "RealCY":
+
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                   // colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
+                   // colunms.push({ field: "JobCardCode", title: "标识卡", width: wid / 10 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 10 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 10 });
+                    colunms.push({ field: "Department", title: "部门", width: wid / 10 });
+                    colunms.push({ field: "Type", title: "超员类别", width: wid / 10 });
+                    //colunms.push({ field: "Place", title: "分站安装位置", width: wid / 10 });
+                    colunms.push({ field: "InTime", title: "下井时间", width: wid / 10 });
+                    colunms.push({ field: "Place", title: "当前位置", width: wid / 10 });
+                    colunms.push({ field: "StartAITime", title: "开始时间", width: wid / 10 });
+                    colunms.push({ field: "continuoustime", title: "持续时长", width: wid / 10 });
+                    break;
+                case "RealTZYC":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    // colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
+                    // colunms.push({ field: "JobCardCode", title: "标识卡", width: wid / 10 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 10 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 10 });
+                    colunms.push({ field: "Department", title: "部门", width: wid / 10 });
+                    // colunms.push({ field: "JobAddress", title: "工作地点", width: wid / 10 });
+                    //colunms.push({ field: "Place", title: "分站安装位置", width: wid / 10 });
+                    colunms.push({ field: "InTime", title: "下井时间", width: wid / 10 });
+                    colunms.push({ field: "AreaName", title: "区域名称", width: wid / 10 });
+                    colunms.push({ field: "InAreaTime", title: "进入区域时间", width: wid / 10 });
+                    colunms.push({ field: "InNowStTime", title: "进入分站时间", width: wid / 10 });
+                    colunms.push({ field: "OrigAddress", title: "应到地点", width: wid / 10 });
+                    colunms.push({ field: "OrigTime", title: "应到时间", width: wid / 10 });
+                    colunms.push({ field: "state", title: "状态", width: wid / 10 });
+
+                    break;
+                case "RYXX":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    // colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
+                    colunms.push({ field: "City", title: "所在城市", width: wid / 10 });
+                    colunms.push({ field: "JobCardCode", title: "身份证号", width: wid / 10 ,hidden:true});
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 10 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 10 });
+                   // colunms.push({ field: "Department", title: "性别", width: wid / 10 });
+                     colunms.push({ field: "JobAddress", title: "工作地点", width: wid / 10 });
+                    //colunms.push({ field: "Place", title: "分站安装位置", width: wid / 10 });
+                     colunms.push({ field: "Blood", title: "血型", width: wid / 10 });
+                     colunms.push({ field: "Record", title: "学历", width: wid / 10 });
+                     colunms.push({ field: "Phone", title: "电话号码", width: wid / 10 });
+                     colunms.push({ field: "WorkCardID", title: "工作证", width: wid / 10 });
+                     colunms.push({ field: "Time", title: "最近更新时间", width: wid / 10 });
+
+                    break;
+
+                case "RYStation":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    // colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
+                    colunms.push({ field: "StationCode", title: "分站编号", width: wid / 10 });
+                    colunms.push({ field: "StationName", title: "分站名称", width: wid / 10, hidden: true });
+                    colunms.push({ field: "Place", title: "安装位置", width: wid / 10 });
+                    colunms.push({ field: "Time", title: "最近更新时间", width: wid / 10 });
+                    break;
+                case "RealCS":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 10 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
+                    colunms.push({ field: "JobCardCode", title: "标识卡", width: wid / 10 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 10 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 10 });
+                    colunms.push({ field: "Department", title: "部门", width: wid / 10 });
+                    colunms.push({ field: "StationName", title: "分站名称", width: wid / 10 });
+                    colunms.push({ field: "Place", title: "分站安装位置", width: wid / 10 });
+                    colunms.push({ field: "InTime", title: "下井时间", width: wid / 10 });
+                    colunms.push({ field: "continuoustime", title: "超时时长", width: wid / 10 });
+                    break;
+                case "HisTrack":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 6 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 6 });
+                    colunms.push({ field: "Department", title: "部门", width: wid / 6 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 5,hidden:true });
+                    colunms.push({ field: "InTime", title: "下井时间", width: wid / 6 });
+                    colunms.push({ field: "OutTime", title: "出井时间", width: wid / 6 });
+                    colunms.push({ field: "continuoustime", title: "工作时长", width: wid / 6 });
+                    break;
+                case "PreRoute":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 5 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 5 });
+                    colunms.push({ field: "JobAddress", title: "工作地点", width: wid / 5 });
+                    colunms.push({ field: "StationList", title: "预设路线", width: wid / 5 });
+                    colunms.push({ field: "time", title: "最近更新时间", width: wid / 5 });
+
+                    break;
+                case "RYAreaInfo":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
+                    colunms.push({ field: "AreaType", title: "区域类型", width: wid / 5 });
+                    colunms.push({ field: "Workers", title: "核定人数", width: wid / 5 });
+                    colunms.push({ field: "AreaName", title: "区域名称", width: wid / 5 });
+                    colunms.push({ field: "time", title: "最近更新时间", width: wid / 5 });
+                    break;
+
+                case "HisTrackInfo":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 5 });
+                    colunms.push({ field: "JobCardCode", title: "标识卡号", width: wid / 5 });
+                    colunms.push({ field: "Department", title: "部门", width: wid / 5 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 5 });
+                    colunms.push({ field: "OutTime", title: "出井时间", width: wid / 5 });
+                    colunms.push({ field: "Place", title: "分站位置", width: wid / 5 });
+                    colunms.push({ field: "inStationTime", title: "进入分站时间", width: wid / 5 });
+                    break;
+                case "HisCS":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 5 });
+                  //  colunms.push({ field: "JobCardCode", title: "标识卡号", width: wid / 5 });
+                    colunms.push({ field: "Department", title: "部门", width: wid / 5 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 5 });
+                    colunms.push({ field: "InTime", title: "下井时间", width: wid / 5 });
+                    colunms.push({ field: "StartAlTime", title: "开始时间", width: wid / 5 });
+                    colunms.push({ field: "EndAlTime", title: "结束时间", width: wid / 5 });
+                    colunms.push({ field: "continuoustime", title: "持续时长", width: wid / 5 });
+                    break;
+                case "HisCY":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 5 });
+                    //  colunms.push({ field: "JobCardCode", title: "标识卡号", width: wid / 5 });
+                    colunms.push({ field: "Department", title: "部门", width: wid / 5 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 5 });
+                    colunms.push({ field: "Position", title: "报警类别", width: wid / 5 });
+                    colunms.push({ field: "Type", title: "下井时间", width: wid / 5 });
+                    colunms.push({ field: "StartAlTime", title: "开始时间", width: wid / 5 });
+                    colunms.push({ field: "EndAlTime", title: "结束时间", width: wid / 5 });
+                    colunms.push({ field: "continuoustime", title: "持续时长", width: wid / 5 });
+                    break;
+
+                case "HisTZYC":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
+                    colunms.push({ field: "JobCardCode", title: "标识卡号", width: wid / 5 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 5 });
+                    
+                    colunms.push({ field: "Department", title: "部门", width: wid / 5 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 5 });
+                    //colunms.push({ field: "Position", title: "报警类别", width: wid / 5 });
+                    colunms.push({ field: "Type", title: "下井时间", width: wid / 5 });
+                    colunms.push({ field: "OrigAddress", title: "应到地点", width: wid / 5 });
+                    colunms.push({ field: "OrigTime", title: "应到时间", width: wid / 5 });
+                    colunms.push({ field: "RealTime", title: "实到时间", width: wid / 5 });
+                    colunms.push({ field: "State", title: "状态", width: wid / 5 });
+                    break;
+                case "RealTXState":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
+                    colunms.push({ field: "systemName", title: "系统名称", width: wid / 5 });
+                    colunms.push({ field: "TimeOut", title: "更新时间", width: wid / 5 });
+                    
+                    colunms.push({ field: "continueTime", title: "持续时长", width: wid / 5 });
+                    colunms.push({ field: "StateCode", title: "当前状态", width: wid / 5 });
+
+                    break;
+
+
             };
             //var myHeight = parseInt($("#myGrid")[0].style.height.replace("px", ""));
             rows = parseInt((@TotalHeight - 50) / 26);
@@ -448,7 +893,41 @@
 
             timedCount();
         });
-        var i;
+            var i;
+            //正常复电：绿色；报警：红色；故障：magenta（这什么颜色？）；馈电异常darkorange；工作异常：maroon；分站故障：,（orange,red？？？)
+            // 测点值： ValueState='正常'||ValueState='复电',green,if(ValueState='报警',red,if(ValueState='故障',magenta,if(ValueState='馈电异常',darkorange,if(ValueState='工作异常',maroon,if(ValueState='分站故障',orange,red))))))">测点值</Col>
+
+            //测点值根据不同的值改变颜色
+            function ShowValueC(val)
+            {
+                if (val == "正常" || val == "负点")
+                {
+                    return '<span style="color:green;">' + val + '</span>';
+                }
+                else if (val == "报警")
+                {
+                    return '<span style="color:red;">' + val + '</span>';
+
+                }
+                else if (val == "故障") {
+                    return '<span style="color:magenta;">' + val + '</span>';
+
+                } else if (val == "馈电异常") {
+                    return '<span style="color:darkorange;">' + val + '</span>';
+
+                }
+                else if (val == "工作异常") {
+                    return '<span style="color:maroon;">' + val + '</span>';
+
+                }
+                else if (val == "分站故障") {
+                    return '<span style="color:orange;">' + val + '</span>';
+
+                }
+                else {
+                    return '<span style="color:red;">' + val + '</span>';
+                }
+            }
         //自动刷新换页方法
         function timedCount() {
             var grid = $('#dg');
