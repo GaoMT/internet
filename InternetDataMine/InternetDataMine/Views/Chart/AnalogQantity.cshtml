@@ -102,6 +102,16 @@
                     IsSensorCountOverSix = false;
                 }
                 
+            },
+            onCheckAll: function (rowIndex, rowData) {
+                if ($("#ddlSensor").combogrid("getValues").length > 6) {
+                    IsSensorCountOverSix = true;
+
+                }
+                else {
+                    IsSensorCountOverSix = false;
+                }
+
             }
 
         });
@@ -147,7 +157,9 @@
                 LoadSensorInfoFoCombogrid();
               
 
-            }
+            },
+          
+
         });
     }
 
@@ -192,12 +204,15 @@
             text: '',
             subtext: ''
         },
+     grid: {  y: '20%' },
         tooltip: {
             trigger: 'axis'
         },
         legend: {//图例
-            data: []
+            data: [],
+          // padding:[5,750,5,5],
         },
+
         animation: false,//是否开启动画
         toolbox: {
             show: true,
@@ -210,6 +225,7 @@
                 saveAsImage: { show: true }
             }
         },
+    
         calculable: true,
         xAxis: [
             {
@@ -245,6 +261,7 @@
         myoption.title.text ='模拟量日曲线'+Unit;
         var xAxisdataIndex = 0;
         myoption.xAxis[0].data = [];
+       
         var mySensorNames = String($("#ddlSensor").combogrid("getText")).split(",");
         myoption.legend.data = [];
         myoption.series = [];
@@ -275,7 +292,7 @@
                             name: item[0].Place,
                             type: 'line',
                             data: [],
-                            symbolSize:0.1,
+                            symbolSize:0.01,
                             //markLine: {
                             //    data: [{ type: 'max', name: '最大值', title: '最大值' },
                             //        { type: 'min',name:'最小值' ,title: '最小值' },
@@ -285,10 +302,15 @@
                             markPoint: {
                                 data: [{type:'max',name:'最大值'}]
                             },
-
+                           
                         };
-
+                   
                         myoption.legend.data.push(item[0].Place);
+                        //if (myoption.legend.data.length == 5 || myoption.legend.data.length==11)
+                        //{
+                        //    myoption.legend.data.push('');
+                        //}
+                        debugger;
                         // TO DO 所有曲线信息
                         //循环查出所有测点值
                         var flag=0;
@@ -296,7 +318,7 @@
 
                             
 
-                            debugger;
+                          //  debugger;
                             if (myindex != 0 && !(myitem.statisticTime.substring(11, 16).replace(/:/g, "") - flag == 1 || ((myitem.statisticTime.substring(11, 16).replace(/:/g, "") - flag) == 41 && myitem.statisticTime.substring(14, 16) == "00" && flag.substring(2)=="59")))
                             {
                                 myoption.xAxis[0].data.push("");
@@ -321,6 +343,7 @@
                 // myChart.clear();
 
                 myChart.clear();
+                //myoption.grid = [{ x: '50%', y: '50%' }];
                 myChart.setOption(myoption);
             
 

@@ -29,9 +29,9 @@
 <link rel="stylesheet" type="text/css" href="../Content/themes/metro-green/easyui.css" title="green">
 <script src="~/Scripts/CompanyInfo.js" type="text/javascript"></script>
 @Scripts.Render("~/bundles/common")
-@*<script src="~/bundles/supcan"></script>
-<script src="~/bundles/jquery"></script>*@
-@*<script type="text/javascript" src="../../binary/dynaload.js?20"> </script>*@
+<script src="~/bundles/supcan?20"></script>
+@*<script src="~/bundles/jquery"></script>
+    <script type="text/javascript" src="../../binary/dynaload.js?20"> </script>*@
 <style type="text/css">
     .datagrid-cell,
     .datagrid-cell-group,
@@ -244,7 +244,7 @@
 			        panelWidth: 360,
 			        idField: 'AreaCode',
 			        textField: 'AreaName',
-			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y&MineCode=@UserMineCode',
 			        method: 'get',
 			        columns: [[
 				        {field:'TmpID',title:'ID号',width:60,align:'center',hidden:true},
@@ -257,8 +257,8 @@
 		        "></select>
 
         <span>     &nbsp;分站名称：</span>
-        <select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
-			        panelWidth: 440,
+        <select class="easyui-combogrid" id="TypeCodeS" style="width:150px" data-options="
+			        panelWidth: 540,
 			        idField: 'StationCode',
 			        textField: 'StationName',
 			        url: '../TransJson/TransJsonToTreeList?DataType=RYStation&isDG=y',
@@ -266,9 +266,9 @@
 			        columns: [[
 				        {field:'StationCode',title:'分站编号',width:100,align:'center'},
 				        {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
-				        {field:'StationName',title:'分站名称',width:100,align:'center'},
-				        {field:'Place',title:'安装地址',width:100,align:'center'},
-                {field:'Time',title:'最近更新时间',width:140,align:'center'},
+				        {field:'StationName',title:'分站名称',width:140,align:'center'},
+				        {field:'Place',title:'安装地址',width:140,align:'center'},
+                {field:'Time',title:'最近更新时间',width:160,align:'center'},
 			        ]], fitColumns: true,
 		        "></select>
                break;
@@ -281,7 +281,7 @@
 			        panelWidth: 440,
 			        idField: 'JobCardCode',
 			        textField: 'JobCardCode',
-			        url: '../TransJson/TransJsonToTreeList?DataType=RYXX&isDG=y',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYXX&isDG=y&MineCode=@UserMineCode',
 			        method: 'get',
 			        columns: [[
 				        {field:'JobCardCode',title:'标识卡',width:100,align:'center'},
@@ -297,7 +297,7 @@
 			        panelWidth: 440,
 			        idField: 'Name',
 			        textField: 'Name',
-			        url: '../TransJson/TransJsonToTreeList?DataType=RYXX&isDG=y',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYXX&isDG=y&MineCode=@UserMineCode',
 			        method: 'get',
 			        columns: [[
 				        {field:'JobCardCode',title:'标识卡',width:100,align:'center'},
@@ -316,7 +316,7 @@
 			        panelWidth: 360,
 			        idField: 'AreaCode',
 			        textField: 'AreaName',
-			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y&MineCode=@UserMineCode',
 			        method: 'get',
 			        columns: [[
 				        {field:'TmpID',title:'ID号',width:60,align:'center',hidden:true},
@@ -339,7 +339,7 @@
 			        panelWidth: 360,
 			        idField: 'AreaCode',
 			        textField: 'AreaName',
-			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			        url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y&MineCode=@UserMineCode',
 			        method: 'get',
 			        columns: [[
 				        {field:'TmpID',title:'ID号',width:60,align:'center',hidden:true},
@@ -377,7 +377,7 @@
 			                    panelWidth: 300,
 			                    idField: 'JobCardCode',
 			                    textField: 'Name',
-			                    url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=RYXX&isDG=y&MineCode=@UserMineCode',
 			                    method: 'get',
 			                    columns: [[
 
@@ -397,32 +397,32 @@
                case "HisTZYC":
                         <span>     &nbsp;区域名称：</span>
             <select class="easyui-combogrid" id="SensorNumS" style="width:100px" data-options="
-			                    panelWidth: 300,
+			                    panelWidth: 360,
 			                    idField: 'AreaCode',
 			                    textField: 'AreaName',
-			                    url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=RYAreaInfo&isDG=y&MineCode=@UserMineCode',
 			                    method: 'get',
 			                    columns: [[
-                    {field:'SimpleName',title:'煤矿名称',width:60,align:'center'},
+                    {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
 				                    {field:'AreaType',title:'区域类型',width:60,align:'center'},
 				                    {field:'AreaCode',title:'区域代码',width:60,align:'center',hidden:true},
                                {field:'AreaName',title:'区域名称',width:60,align:'center'},
-                    {field:'time',title:'最近更新时间',width:120,align:'center'},
+                    {field:'Time',title:'最近更新时间',width:140,align:'center'},
 			                    ]], fitColumns: true,
 		                    "></select>
               <span>     &nbsp;分站名称：</span>
-        <select class="easyui-combogrid" id="TypeCodeS" style="width:100px" data-options="
-			        panelWidth: 300,
+        <select class="easyui-combogrid" id="TypeCodeS" style="width:150px" data-options="
+			        panelWidth: 540,
 			        idField: 'StationCode',
 			        textField: 'StationName',
 			        url: '../TransJson/TransJsonToTreeList?DataType=RYStation&isDG=y',
 			        method: 'get',
 			        columns: [[
-				        {field:'StationCode',title:'分站编号',width:60,align:'center'},
-				        {field:'SimpleName',title:'煤矿名称',width:120,align:'center'},
-				        {field:'StationName',title:'分站名称',width:60,align:'center'},
-				        {field:'Place',title:'安装地址',width:60,align:'center'},
-                {field:'Time',title:'最近更新时间',width:60,align:'center'},
+				        {field:'StationCode',title:'分站编号',width:100,align:'center'},
+				        {field:'SimpleName',title:'煤矿名称',width:100,align:'center'},
+				        {field:'StationName',title:'分站名称',width:140,align:'center'},
+				        {field:'Place',title:'安装地址',width:140,align:'center'},
+                {field:'Time',title:'最近更新时间',width:160,align:'center'},
 			        ]], fitColumns: true,
 		        "></select>
                    <span>  &nbsp;开始时间</span>
@@ -449,7 +449,7 @@
             //根据PreLoadData选择不同的 列
             var colunms = [];
             // 设置是否隐藏“煤矿名称”这一列：如果有minecode 则隐藏 若无显示
-            var hideThis = false;
+            var hideThis = true;
             if ('@UserMineCode' == null || '@UserMineCode' == "")
             {
                 hideThis = false;
@@ -475,7 +475,7 @@
                             colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 8 });
                             colunms.push({ field: "TypeName", title: "设备名", width: wid / 8 });
                             colunms.push({ field: "Place", title: "安装地点", width: wid / 8 });
-                            colunms.push({ field: "ShowValue", title: "测点值", width: wid / 8, formatter: ShowValueC});
+                            colunms.push({ field: "ShowValue", title: "测点值", width: wid / 8, formatter: ShowValueC });
                             colunms.push({ field: "Unit", title: "单位", width: wid / 12 });
                             colunms.push({ field: "Datetime", title: "监测时间", width: wid / 7 });
                             colunms.push({ field: "ValueState", title: "状态", width: wid / 8, formatter: ShowValueC });
@@ -499,7 +499,7 @@
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 8 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 8 });
                     colunms.push({ field: "Unit", title: "单位", width: wid / 8 });
-                    colunms.push({ field: "ShowValue", title: "显示值", width: wid / 8 });
+                    colunms.push({ field: "ShowValue", title: "显示值", width: wid / 8});
                     colunms.push({ field: "Datetime", title: "报警开始时间", width: wid / 8 });
                     colunms.push({ field: "continuoustime", title: "持续时长", width: wid / 8 });
                     break;
@@ -510,7 +510,7 @@
                     colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 12 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 12 });
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 12 });
-                    colunms.push({ field: "ShowValue", title: "显示值", width: wid /12 });
+                    colunms.push({ field: "ShowValue", title: "显示值", width: wid / 12 });
                     colunms.push({ field: "Unit", title: "单位", width: wid / 12 });
                     colunms.push({ field: "PowerMax", title: "断电最大值", width: wid / 13 });
                     colunms.push({ field: "PowerMaxDatetime", title: "断电最大值时刻", width: wid / 11});
@@ -529,7 +529,7 @@
                     colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 9 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 9 });
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 9 });
-                    colunms.push({ field: "ShowValue", title: "显示值", width: wid /12 });
+                    colunms.push({ field: "ShowValue", title: "显示值", width: wid / 12, formatter: ShowValueC });
                     colunms.push({ field: "Unit", title: "单位", width: wid /12});
                     colunms.push({ field: "ValueState", title: "值状态", width: wid / 12, formatter: ShowValueC });
                     colunms.push({ field: "Datetime", title: "故障开始时间", width: wid / 7 });
@@ -869,7 +869,7 @@
             $("#dg").datagrid({
                 pageSize: rows,
                 title: '@PageTitle',
-                url: "../TransJson/TransJsonToTreeList?DataType=@PreLoadData&isDG=y&rows=" + rows + getUrlStafix(),
+                url: "../TransJson/TransJsonToTreeList?DataType=@PreLoadData&MineCode=@UserMineCode&isDG=y&rows=" + rows + getUrlStafix(),
                 fitColumns: true,
                 columns: [colunms],
                 toolbar: "#toolbar",
@@ -898,29 +898,31 @@
             // 测点值： ValueState='正常'||ValueState='复电',green,if(ValueState='报警',red,if(ValueState='故障',magenta,if(ValueState='馈电异常',darkorange,if(ValueState='工作异常',maroon,if(ValueState='分站故障',orange,red))))))">测点值</Col>
 
             //测点值根据不同的值改变颜色
-            function ShowValueC(val)
+          
+            function ShowValueC(val,obj)
             {
-                if (val == "正常" || val == "负点")
+                if (obj.ValueState == "正常" || obj.ValueState == "复电")
                 {
+                    
                     return '<span style="color:green;">' + val + '</span>';
                 }
-                else if (val == "报警")
+                else if (obj.ValueState == "报警")
                 {
                     return '<span style="color:red;">' + val + '</span>';
 
                 }
-                else if (val == "故障") {
+                else if (obj.ValueState == "故障") {
                     return '<span style="color:magenta;">' + val + '</span>';
 
-                } else if (val == "馈电异常") {
+                } else if (obj.ValueState == "馈电异常") {
                     return '<span style="color:darkorange;">' + val + '</span>';
 
                 }
-                else if (val == "工作异常") {
+                else if (obj.ValueState == "工作异常") {
                     return '<span style="color:maroon;">' + val + '</span>';
 
                 }
-                else if (val == "分站故障") {
+                else if (obj.ValueState == "分站故障") {
                     return '<span style="color:orange;">' + val + '</span>';
 
                 }

@@ -24,10 +24,10 @@
                     <th field="SensorNum" width="10%">测点编号</th>
                     <th field="TypeName" width="10%">设备名</th>
                     <th field="Place" width="20%">安装地点</th>
-                    <th field="ShowValue" width="8%">测点值</th>
+                    <th field="ShowValue" width="8%" data-options="styler:ShowValueC">测点值</th>
                     <th field="Unit" width="5%">单位</th>
                     <th field="Datetime" width="20%">监测时间</th>
-                    <th field="ValueState" width="10%">状态</th>
+                    <th field="ValueState" width="10%" data-options="styler:ShowValueC">状态</th>
 
                 </tr>
 
@@ -130,10 +130,48 @@
         $("#dg").datagrid({
             url: "../TransJson/TransJsonToTreeList?DataType=RealData&isDG=y&rows=" + rows + getUrlStafix(),
         });
-
+        p = $('#dg').datagrid('getPager');
+        p.pagination({
+            showPageList: false,
+            beforePageText: '第',//页数文本框前显示的汉字
+            layout: ['first', 'prev', 'links', 'next', 'last', 'refresh', 'manual'],
+            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+            afterPageText: '页    共 {pages} 页',
+        });
     }
 
+    function ShowValueC(val,obj) {
+        if (obj.ValueState == "正常" || obj.ValueState == "复电") {
+            return "color:green;";
+        }
+        else if (obj.ValueState == "报警") {
+            return "color:red;";
 
+        }
+        else if (obj.ValueState == "故障") {
+            return "color:magenta;";
+           // return '<span style="color:magenta;">' + val + '</span>';
+
+        } else if (obj.ValueState == "馈电异常") {
+            return "color:darkorange;";
+         //   return '<span style="color:darkorange;">' + val + '</span>';
+
+        }
+        else if (obj.ValueState == "工作异常") {
+            return "color:maroon;";
+           // return '<span style="color:maroon;">' + val + '</span>';
+
+        }
+        else if (obj.ValueState == "分站故障") {
+            return "color:orange;";
+           // return '<span style="color:orange;">' + val + '</span>';
+
+        }
+        else {
+            return "color:red;";
+          //  return '<span style="color:red;">' + val + '</span>';
+        }
+    }
 </script>
 
 
