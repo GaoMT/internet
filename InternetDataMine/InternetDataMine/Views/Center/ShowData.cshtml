@@ -39,6 +39,11 @@
     .datagrid-cell-rownumber {
         text-align: center;
     }
+
+    .panel-title {
+        text-align: center;
+    }
+
 </style>
 
 <body>
@@ -607,7 +612,7 @@
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 8 });
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 8 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 8 });
-                    colunms.push({ field: "PowerDatetime", title: "断电时间", width: wid / 8 });jiao
+                    colunms.push({ field: "PowerDatetime", title: "断电时间", width: wid / 8 });
                     colunms.push({ field: "PowerEndDatetime", title: "复电时间", width: wid / 8 });
                     colunms.push({ field: "continuoustime", title: "持续时间", width: wid / 8 });
                     colunms.push({ field: "max", title: "断电最大值", width: wid / 8 });
@@ -868,7 +873,7 @@
             });*@
             $("#dg").datagrid({
                 pageSize: rows,
-                title: '@PageTitle',
+                title: '<span style="font-size:16px;text-align:center">@PageTitle</span>',
                 url: "../TransJson/TransJsonToTreeList?DataType=@PreLoadData&MineCode=@UserMineCode&isDG=y&rows=" + rows + getUrlStafix(),
                 fitColumns: true,
                 columns: [colunms],
