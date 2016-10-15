@@ -57,10 +57,11 @@
 
         </div>
         <div id="toolbar">
-            <input type="checkbox" id="StopReflesh" onclick="ClickReflesh(this)" /><label for="StopReflesh">停止刷新</label>
+            @if (PreLoadData.IndexOf("His")==-1)
+            {<input type="checkbox" id="StopReflesh" onclick="ClickReflesh(this)" /><label for="StopReflesh">停止刷新</label>}
             &nbsp;
             @if (@UserMineCode == "" || @UserMineCode == null)
-        {
+        {                                                                                                                    
         <span>煤矿名称:</span>
         <select class="easyui-combogrid" id="MineCodeS" style="width:100px" data-options="
 			panelWidth: 240,
@@ -281,6 +282,7 @@
                case "RYXX":
                case "RealCS":
                case "PreRoute":
+               case "RYPathInfo":
                 <span>     &nbsp;标识卡号：</span>
 <select class="easyui-combogrid" id="SensorNumS" style="width:100px" data-options="
 			        panelWidth: 440,
@@ -459,6 +461,7 @@
             {
                 hideThis = false;
             }
+           // alert('@PreLoadData');
             //根据PreLoadData  选择不同的列
             switch ('@PreLoadData') {
                 case "RealData":
@@ -515,7 +518,7 @@
                     colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 12 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 12 });
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 12 });
-                    colunms.push({ field: "ShowValue", title: "显示值", width: wid / 12 });
+                    colunms.push({ field: "ShowValue", title: "显示值", width: wid / 12, formatter: changeRed });
                     colunms.push({ field: "Unit", title: "单位", width: wid / 12 });
                     colunms.push({ field: "PowerMax", title: "断电最大值", width: wid / 13 });
                     colunms.push({ field: "PowerMaxDatetime", title: "断电最大值时刻", width: wid / 11});
@@ -557,6 +560,7 @@
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
 
                     colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 5 });
+                    colunms.push({ field: "TypeName", title: "测点名称", width: wid / 5 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 5 });
                     colunms.push({ field: "Unit", title: "单位", width: wid / 5 });
                     break;
@@ -582,6 +586,7 @@
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 11 });
+                    colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 5 });
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 11 });
                     colunms.push({ field: "place", title: "安装地点", width: wid / 11 });
                     colunms.push({ field: "AbnormalDateTime", title: "断电时间", width: wid / 8 });
@@ -598,6 +603,7 @@
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
+                    colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 5 });
                     colunms.push({ field: "typeName", title: "设备名", width: wid / 10 });
                     colunms.push({ field: "place", title: "安装地点", width: wid / 6 });
                     colunms.push({ field: "HitchDatetime", title: "故障开始时间", width: wid / 6 });
@@ -610,6 +616,7 @@
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 8 });
+                    colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 5 });
                     colunms.push({ field: "TypeName", title: "设备名", width: wid / 8 });
                     colunms.push({ field: "Place", title: "安装地点", width: wid / 8 });
                     colunms.push({ field: "PowerDatetime", title: "断电时间", width: wid / 8 });
@@ -627,17 +634,18 @@
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 7 });
-                    colunms.push({ field: "SensorNum", title: "测点编号", width: wid / 7 });
+                    colunms.push({ field: "sensorNum", title: "测点编号", width: wid / 7 });
                     colunms.push({ field: "TypeName", title: "设备名称", width: wid / 7 });
+                    colunms.push({ field: "Place", title: "安装地点", width: wid / 8 });
                     colunms.push({ field: "MaxVal", title: "最大值", width: wid / 7 });
                     colunms.push({ field: "MinVal", title: "最小值", width: wid / 7 });
-                    colunms.push({ field: "AvgVal", title: "平均值", width: wid / 7 });
+                    colunms.push({ field: "AvgVal", title: "平均值", width: wid / 7, formatter: changeTwo });
                     colunms.push({ field: "DectTime", title: "监测时间", width: wid / 7 });
 
                     break;
                 case "AQMNL_1D":
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
-                    colunms.push({ field: "煤矿编号", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "煤矿编号", title: "煤矿编码", hidden: hideThis, width: wid / 5 });
                     colunms.push({ field: "煤矿名称", title: "煤矿名称", hidden: hideThis, width: wid / 7 });
                     colunms.push({ field: "测点编号", title: "测点编号", width: wid / 7 });
                     colunms.push({ field: "设备名", title: "设备名称", width: wid / 7 });
@@ -732,13 +740,25 @@
                      colunms.push({ field: "Time", title: "最近更新时间", width: wid / 10 });
 
                     break;
+                case "RYPathInfo":
 
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 5 });
+                    colunms.push({ field: "JobCardCode", title: "标识卡号", width: wid / 5 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 5 });
+                    //colunms.push({ field: "Department", title: "部门", width: wid / 5 });
+                    colunms.push({ field: "Position", title: "职务", width: wid / 5 });
+                   
+                    colunms.push({ field: "StationsList", title: "分站和时间点", width: wid / 5 });
+                    colunms.push({ field: "Time", title: "最近更新时间", width: wid / 5 });
+                    break;
                 case "RYStation":
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
                     // colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 5 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
                     colunms.push({ field: "StationCode", title: "分站编号", width: wid / 10 });
-                    colunms.push({ field: "StationName", title: "分站名称", width: wid / 10, hidden: true });
+                    colunms.push({ field: "StationName", title: "分站名称", width: wid / 10});
                     colunms.push({ field: "Place", title: "安装位置", width: wid / 10 });
                     colunms.push({ field: "Time", title: "最近更新时间", width: wid / 10 });
                     break;
@@ -747,10 +767,10 @@
                     colunms.push({ field: "MineCode", title: "煤矿编码", hidden: true, width: wid / 10 });
                     colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 10 });
                     colunms.push({ field: "JobCardCode", title: "标识卡", width: wid / 10 });
-                    colunms.push({ field: "Name", title: "姓名", width: wid / 10 });
+                    colunms.push({ field: "Name", title: "姓名", width: wid / 10 ,formatter:changeRed});
                     colunms.push({ field: "Position", title: "职务", width: wid / 10 });
                     colunms.push({ field: "Department", title: "部门", width: wid / 10 });
-                    colunms.push({ field: "StationName", title: "分站名称", width: wid / 10 });
+                    //colunms.push({ field: "StationName", title: "分站名称", width: wid / 10 });
                     colunms.push({ field: "Place", title: "分站安装位置", width: wid / 10 });
                     colunms.push({ field: "InTime", title: "下井时间", width: wid / 10 });
                     colunms.push({ field: "continuoustime", title: "超时时长", width: wid / 10 });
@@ -795,7 +815,7 @@
                     colunms.push({ field: "JobCardCode", title: "标识卡号", width: wid / 5 });
                     colunms.push({ field: "Department", title: "部门", width: wid / 5 });
                     colunms.push({ field: "Position", title: "职务", width: wid / 5 });
-                    colunms.push({ field: "OutTime", title: "出井时间", width: wid / 5 });
+                    //colunms.push({ field: "OutTime", title: "出井时间", width: wid / 5 });
                     colunms.push({ field: "Place", title: "分站位置", width: wid / 5 });
                     colunms.push({ field: "inStationTime", title: "进入分站时间", width: wid / 5 });
                     break;
@@ -903,7 +923,18 @@
             // 测点值： ValueState='正常'||ValueState='复电',green,if(ValueState='报警',red,if(ValueState='故障',magenta,if(ValueState='馈电异常',darkorange,if(ValueState='工作异常',maroon,if(ValueState='分站故障',orange,red))))))">测点值</Col>
 
             //测点值根据不同的值改变颜色
-          
+            function changeRed(val)
+            {
+                return '<span style="color:red;">' + val + '</span>';
+            }
+
+            function changeTwo(val)
+            {
+                if (val != null || val!="")
+                {
+                    return val.toFixed(2);
+                }
+            }
             function ShowValueC(val,obj)
             {
                 if (obj.ValueState == "正常" || obj.ValueState == "复电")
@@ -967,7 +998,7 @@
             var SensorNum;
             var StartTime;
             var EndTime;
-          var   url = "../TransJson/TransJsonToTreeList?isDG=y&DataType=" + '@PreLoadData';
+          var   url = "../TransJson/TransJsonToTreeList?isDG=y&DataType=" + '@PreLoadData'+"&MineCode="+'@UserMineCode';
             if ($("#MineCodeS").length > 0)//先判断 是否有这个id的控件
             {
                 if ($("#MineCodeS").combogrid("grid").datagrid("getSelected") != null)
@@ -981,14 +1012,18 @@
             {
                 if ($("#TypeCodeS").combogrid("grid").datagrid("getSelected") != null)
                 {
-                    TypeCode = $("#TypeCodeS").combogrid("grid").datagrid("getSelected").TypeCode;
+                    TypeCode = $('#TypeCodeS').combobox('getValue');
                     url += "&SensorType=" + TypeCode;
                 }
             }
             if ($("#SensorNumS").length > 0) {
+             
                 if ($("#SensorNumS").combogrid("grid").datagrid("getSelected") != null)
                 {
-                    SensorNum = $("#SensorNumS").combogrid("grid").datagrid("getSelected").SensorNum;
+                    //  getValue 是获取选中的idfield  gettext是获取的选中的 textfield 也就是显示出来的文字
+                 //   alert($('#SensorNumS').combobox('getValue') + "," + $('#SensorNumS').combobox('getText'));
+                    SensorNum = $('#SensorNumS').combobox('getValue');
+                   // alert(SensorNum)
                     url += "&SensorNum=" + SensorNum;
                 }
             }
@@ -1001,6 +1036,7 @@
                 EndTime = $("#EndTime").datetimebox("getValue");
                 url += "&EndTime=" + EndTime;
             }
+           // alert(url);
             $("#dg").datagrid({
                 url:url
             });
