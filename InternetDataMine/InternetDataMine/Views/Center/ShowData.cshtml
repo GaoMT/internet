@@ -90,7 +90,7 @@
                 case "RealData_KY":
                 case "AQBJ_HG":
                 case "AQGZ_HG":
-            case "RealData_HG":
+            //case "RealData_HG":
         <span>     &nbsp;设备名：</span>
         <select class="easyui-combogrid" id="TypeCodeS" style="width:150px" data-options="
 			panelWidth: 300,
@@ -120,10 +120,21 @@
 				                    {field:'Unit',title:'单位',width:60,align:'center'},
 			                    ]], fitColumns: true,
 		                    "></select>
-                break;
-                
-                
-                case "PointSet":
+                    break;
+            case "RealData_HG":
+                 <span> &nbsp;&nbsp;   &nbsp;气体名称：</span>
+<select class="easyui-combogrid" id="SensorNumS" style="width:150px" data-options="
+			                    panelWidth: 150,
+			                    idField: 'SensorNum',
+			                    textField: 'SensorNum',
+			                    url: '../TransJson/TransJsonToTreeList?DataType=Sensor&isDG=y',
+			                    method: 'get',
+			                    columns: [[
+				                    {field:'SensorNum',title:'气体名称',width:150,align:'center'},
+			                    ]], fitColumns: true,
+		                    "></select>
+                    break;
+            case "PointSet":
                          <span>    &nbsp;测点类型：</span>
         <select class="easyui-combogrid" id="TypeCodeS" style="width:150px" data-options="
 			                    panelWidth: 200,
@@ -466,7 +477,7 @@
             switch ('@PreLoadData') {
                 case "RealData":
                 case "RealData_KY":
-                case "RealData_HG":
+               // case "RealData_HG":
                     if ('@PageSystemType' == 1 || '@PageSystemType' == 2 || '@PageSystemType' == 5) {
                         //实时通信状态取的是default的值
                         if ('@QueryDataPath'.indexOf("PointSet")>0) {
@@ -510,6 +521,13 @@
                     colunms.push({ field: "ShowValue", title: "显示值", width: wid / 8});
                     colunms.push({ field: "Datetime", title: "报警开始时间", width: wid / 8 });
                     colunms.push({ field: "continuoustime", title: "持续时长", width: wid / 8 });
+                    break;
+                case "RealData_HG":
+                    colunms.push({ field: "TmpID", title: "ID号", hidden: true });
+                    colunms.push({ field: "SimpleName", title: "煤矿名称", hidden: hideThis, width: wid / 8 });
+                    colunms.push({ field: "SensorNum", title: "气体名称", width: wid / 8 });
+                    colunms.push({ field: "Datetime", title: "时间", width: wid / 8 });
+                    colunms.push({ field: "ShowValue", title: "显示值", width: wid / 8 });
                     break;
                 case "AQDD":
                     colunms.push({ field: "TmpID", title: "ID号", hidden: true });
